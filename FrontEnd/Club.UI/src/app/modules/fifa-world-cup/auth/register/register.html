@@ -1,0 +1,62 @@
+<div class="auth-wrapper">
+
+    <div class="auth-card">
+
+        <img src="/FIFALogo/FIFA-2026-World-Cup.png" class="logo" alt="FIFA">
+
+        <h2>FIFA Predictor</h2>
+
+        <p class="subtitle">
+            Create your account
+        </p>
+
+        <input type="text" class="form-control" placeholder="Username" [(ngModel)]="registerObj.userName"
+            name="userName">
+
+        <div class="error" *ngIf="errors.userName">
+            {{ errors.userName }}
+        </div>
+
+        <input type="email" class="form-control" placeholder="Email" [(ngModel)]="registerObj.email" name="email">
+
+        <div class="error" *ngIf="errors.email">
+            {{ errors.email }}
+        </div>
+
+        <input type="text" class="form-control" placeholder="Mobile Number" [(ngModel)]="registerObj.mobile"
+            name="mobile">
+
+        <div class="error" *ngIf="errors.mobile">
+            {{ errors.mobile }}
+        </div>
+
+        <input type="password" class="form-control" placeholder="Password" [(ngModel)]="registerObj.password"
+            name="password">
+
+        <div class="error" *ngIf="errors.password">
+            {{ errors.password }}
+        </div>
+
+        <input type="password" class="form-control" placeholder="Confirm Password" [(ngModel)]="confirmPassword"
+            name="confirmPassword">
+        
+        <div class="error" *ngIf="errors.confirmPassword">
+            {{ errors.confirmPassword }}
+        </div>
+
+        <button class="btn-auth" (click)="onRegister()">
+            Create Account
+        </button>
+        <div class="bottom-link">
+
+            Already have an account?
+
+            <a routerLink="/login">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,21 +1,29 @@
 import { Component } from '@angular/core';
 import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [Footer],
+  imports: [Footer,RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home {
-  profileImage =
-    'https://i.pravatar.cc/100';
-  userName = 'Shammas';
+  profileImage = localStorage.getItem('ProfileImage') || '/Profile/DefaultProfile.png';
+  
 
   greeting = '';
 
   emoji = '';
+
+  userName = '';
+
+ngOnInit()
+{
+   this.userName =
+      localStorage.getItem('UserName') || '';
+}
 
   constructor() {
 

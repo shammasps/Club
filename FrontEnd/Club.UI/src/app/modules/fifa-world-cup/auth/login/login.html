@@ -1,0 +1,46 @@
+<div class="auth-wrapper">
+
+    <div class="auth-card">
+
+        <img src="/FIFALogo/FIFA-2026-World-Cup.png" class="logo" alt="FIFA">
+
+        <h2>FIFA Predictor</h2>
+
+        <p class="subtitle">
+            Welcome Back! Login to continue
+        </p>
+
+        <div class="alert error-alert" *ngIf="errorMessage">
+            {{errorMessage}}
+        </div>
+
+        <div class="alert success-alert" *ngIf="successMessage">
+            {{successMessage}}
+        </div>
+
+        <input type="text" class="form-control" [(ngModel)]="loginObj.userName" placeholder="Username">
+
+        <input type="password" class="form-control" [(ngModel)]="loginObj.password" placeholder="Password">
+
+
+
+        <button class="btn-auth" (click)="onLogin()">
+
+            {{isLoading ? 'Please Wait...' : 'Login'}}
+
+        </button>
+        
+
+        <div class="bottom-link">
+
+            Don't have an account?
+
+            <a routerLink="/signup">
+                Register
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

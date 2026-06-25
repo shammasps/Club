@@ -1,0 +1,6 @@
+@Club.Core_HostAddress = http://localhost:5102
+
+GET {{Club.Core_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
