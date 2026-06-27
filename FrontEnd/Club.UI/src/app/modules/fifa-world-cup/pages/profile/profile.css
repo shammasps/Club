@@ -1,3 +1,7 @@
+/* ==========================
+   Reset
+========================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -16,19 +20,42 @@ body {
 .profile-page {
     min-height: 100vh;
     background: #f4f7fb;
+    padding: 20px 0 90px;
 }
 
 /* ==========================
-   Header
+   Main Card
 ========================== */
 
-.profile-header {
+.profile-card {
+
+    width: calc(100% - 30px);
+
+    max-width: 520px;
+
+    margin: auto;
+
+    background: #fff;
+
+    border-radius: 25px;
+
+    overflow: hidden;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
+
+    padding-bottom: 25px;
+
+}
+
+/* ==========================
+   Blue Header
+========================== */
+
+.card-header {
 
     height: 180px;
 
-    background: linear-gradient(135deg, #005bea 0%, #00c6fb 100%);
-
-    border-radius: 0 0 35px 35px;
+    background: linear-gradient(135deg, #005bea, #00c6fb);
 
     position: relative;
 
@@ -40,14 +67,18 @@ body {
 
     padding-top: 25px;
 
-    color: white;
+    color: #fff;
+
+    border-radius: 25px 25px 40px 40px;
+
 }
 
-.profile-header h2 {
+.card-header h2 {
 
     font-size: 28px;
 
-    font-weight: bold;
+    font-weight: 700;
+
 }
 
 /* ==========================
@@ -60,7 +91,7 @@ body {
 
     left: 18px;
 
-    top: 20px;
+    top: 18px;
 
     width: 42px;
 
@@ -70,20 +101,21 @@ body {
 
     border-radius: 50%;
 
-    background: rgba(255,255,255,.25);
+    background: rgba(255, 255, 255, .25);
 
-    color: white;
+    color: #fff;
+
+    font-size: 20px;
 
     cursor: pointer;
 
     transition: .3s;
 
-    font-size: 20px;
 }
 
 .back-btn:hover {
 
-    background: rgba(255,255,255,.45);
+    background: rgba(255, 255, 255, .4);
 
 }
 
@@ -97,46 +129,49 @@ body {
 
     justify-content: center;
 
-    margin-top: -70px;
+    margin-top: -65px;
 
     position: relative;
 
     z-index: 100;
+
 }
 
 .image-section {
 
     position: relative;
+
 }
 
 .profile-image {
 
-    width: 145px;
+    width: 130px;
 
-    height: 145px;
+    height: 130px;
 
     border-radius: 50%;
 
     object-fit: cover;
 
-    border: 5px solid white;
+    border: 6px solid #fff;
 
-    background: white;
+    background: #fff;
 
-    box-shadow: 0 10px 25px rgba(0,0,0,.20);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .18);
+
 }
 
 .camera-btn {
 
     position: absolute;
 
-    right: 8px;
+    right: 5px;
 
     bottom: 5px;
 
-    width: 42px;
+    width: 38px;
 
-    height: 42px;
+    height: 38px;
 
     border-radius: 50%;
 
@@ -152,9 +187,10 @@ body {
 
     cursor: pointer;
 
-    font-size: 18px;
+    border: 3px solid #fff;
 
     transition: .3s;
+
 }
 
 .camera-btn:hover {
@@ -164,45 +200,31 @@ body {
 }
 
 /* ==========================
-   Card
+   User Info
 ========================== */
-
-.profile-card {
-
-    width: calc(100% - 30px);
-
-    max-width: 520px;
-
-    margin: 20px auto;
-
-    background: white;
-
-    border-radius: 25px;
-
-    padding: 25px;
-
-    box-shadow: 0 10px 30px rgba(0,0,0,.08);
-    margin-bottom:90px;
-}
 
 .user-name {
 
     text-align: center;
 
-    font-size: 25px;
+    margin-top: 18px;
+
+    font-size: 24px;
 
     font-weight: bold;
 
-    margin-bottom: 8px;
 }
 
 .user-email {
 
     text-align: center;
 
-    color: gray;
+    color: #777;
+
+    margin-top: 6px;
 
     margin-bottom: 30px;
+
 }
 
 /* ==========================
@@ -215,29 +237,34 @@ body {
 
     gap: 12px;
 
+    padding: 0 20px;
+
     margin-bottom: 30px;
+
 }
 
 .stat-card {
 
     flex: 1;
 
-    background: #f7f9fc;
+    background: #f8f9fc;
 
-    border-radius: 16px;
+    border-radius: 15px;
 
     padding: 18px;
 
     text-align: center;
 
     transition: .3s;
+
 }
 
 .stat-card:hover {
 
     transform: translateY(-4px);
 
-    box-shadow: 0 8px 20px rgba(0,0,0,.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+
 }
 
 .stat-card i {
@@ -247,31 +274,41 @@ body {
     color: #0d6efd;
 
     margin-bottom: 10px;
+
 }
 
 .stat-card h4 {
 
-    font-size: 24px;
+    font-size: 22px;
 
     color: #0d6efd;
 
-    margin-bottom: 5px;
+    margin: 8px 0 4px;
+
 }
 
 .stat-card span {
 
-    color: gray;
-
     font-size: 13px;
+
+    color: #777;
+
 }
 
 /* ==========================
    Form
 ========================== */
 
+.form-section {
+
+    padding: 0 20px;
+
+}
+
 .form-group {
 
     margin-bottom: 18px;
+
 }
 
 .form-group label {
@@ -283,6 +320,7 @@ body {
     margin-bottom: 8px;
 
     color: #333;
+
 }
 
 .form-group i {
@@ -290,6 +328,7 @@ body {
     color: #0d6efd;
 
     margin-right: 6px;
+
 }
 
 .form-control {
@@ -298,22 +337,26 @@ body {
 
     height: 48px;
 
-    border-radius: 10px;
-
     border: 1px solid #ddd;
+
+    border-radius: 12px;
 
     padding: 0 15px;
 
     outline: none;
 
     transition: .3s;
+
+    background: #fff;
+
 }
 
 .form-control:focus {
 
     border-color: #0d6efd;
 
-    box-shadow: 0 0 5px rgba(13,110,253,.25);
+    box-shadow: 0 0 6px rgba(13, 110, 253, .2);
+
 }
 
 /* ==========================
@@ -322,22 +365,25 @@ body {
 
 .button-section {
 
+    padding: 0 20px;
+
     margin-top: 25px;
+
 }
 
 .btn-save {
 
     width: 100%;
 
-    height: 48px;
+    height: 50px;
 
     border: none;
 
-    border-radius: 10px;
+    border-radius: 12px;
 
     background: #0d6efd;
 
-    color: white;
+    color: #fff;
 
     font-size: 16px;
 
@@ -346,33 +392,34 @@ body {
     cursor: pointer;
 
     transition: .3s;
+
 }
 
 .btn-save:hover {
 
     background: #0b5ed7;
+
 }
 
 .btn-save i {
 
     margin-right: 8px;
+
 }
 
 .btn-logout {
 
     width: 100%;
 
-    height: 48px;
+    height: 50px;
 
     border: none;
 
-    border-radius: 10px;
-
-    margin-top: 12px;
+    border-radius: 12px;
 
     background: #dc3545;
 
-    color: white;
+    color: #fff;
 
     font-size: 16px;
 
@@ -380,17 +427,84 @@ body {
 
     cursor: pointer;
 
+    margin-top: 12px;
+
     transition: .3s;
+
 }
 
 .btn-logout:hover {
 
     background: #bb2d3b;
+
 }
 
 .btn-logout i {
 
     margin-right: 8px;
+
+}
+
+.team-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    background:#f8f9fc;
+
+    border-radius:15px;
+
+    padding:15px 18px;
+
+    margin-bottom:20px;
+
+    border:1px solid #e9ecef;
+
+}
+
+.team-icon{
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:50%;
+
+    background:#0d6efd;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:22px;
+
+}
+
+.team-info span{
+
+    color:#6c757d;
+
+    font-size:13px;
+
+}
+
+.team-info h5{
+
+    margin:3px 0 0;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    color:#212529;
+
 }
 
 /* ==========================
@@ -399,7 +513,7 @@ body {
 
 @media (max-width:768px) {
 
-    .profile-header {
+    .card-header {
 
         height: 170px;
 
@@ -410,16 +524,13 @@ body {
         width: 120px;
 
         height: 120px;
-    }
 
-    .profile-card {
-
-        padding: 20px;
     }
 
     .user-name {
 
         font-size: 22px;
+
     }
 
 }
@@ -429,23 +540,19 @@ body {
     .stats-section {
 
         flex-direction: column;
+
     }
 
     .stat-card {
 
         width: 100%;
+
     }
 
-    .profile-header h2 {
+    .card-header h2 {
 
         font-size: 24px;
-    }
 
-    .back-btn {
-
-        width: 38px;
-
-        height: 38px;
     }
 
 }

@@ -11,7 +11,7 @@ CREATE PROCEDURE spLogin
 --@Password   VARCHAR (100)
 AS
 BEGIN
-    SELECT UserID,UserName,Email,Mobile,Password
+    SELECT UserID,UserName,Email,Mobile,Password,TeamName,ProfileImage
     FROM   Users
     WHERE  UserName = @UserName
     --AND    Password = @Password

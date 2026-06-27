@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<DBConnection>();
 builder.Services.AddScoped<AuthRepository>();
+builder.Services.AddScoped<ProfileRepository>();
 
 
 builder.Services.AddCors(options =>

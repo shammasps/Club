@@ -5,6 +5,7 @@ import { LoginModel } from '../../../models/login.model';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
+import { ProfileService } from '../../../../core/services/profileServices/profile-service';
 
 
 @Component({
@@ -19,13 +20,18 @@ export class Login {
   loginObj: LoginModel = {
     userName: '',
     password: '',
-    email: '',
-    userID: ''
+    // email: '',
+    // userID: '',
+    // teamName:'',
+    // profileImage:''
+
+
   };
 
   constructor(
     private authService: AuthService,
     private router: Router,
+     private profileService: ProfileService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -51,9 +57,9 @@ export class Login {
           localStorage.setItem('UserName', res.userName);
           localStorage.setItem('UserID', res.userID);
           localStorage.setItem('Email', res.email);
-
-          // Default profile image (until user uploads one)
-          localStorage.setItem('ProfileImage', '');
+          localStorage.setItem('SelectedTeam', res.teamName || '');
+          localStorage.setItem('ProfileImage',res.profileImage || '/Profile/DefaultProfile.png'
+          );
 
           setTimeout(() => {
             this.router.navigate(['/home']);

@@ -132,3 +132,367 @@
     }
 
 }
+
+/* ===========================
+   MATCHES SECTION
+=========================== */
+
+.matches-section {
+
+    padding: 20px 16px 110px;
+
+    background: #f5f7fb;
+
+    min-height: 100vh;
+
+}
+
+.section-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+
+}
+
+.section-header h3 {
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    color: #1b1b1b;
+
+}
+
+.section-header span {
+
+    background: #0057b8;
+
+    color: #fff;
+
+    padding: 6px 14px;
+
+    border-radius: 30px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+/* ===========================
+   MATCH CARD
+=========================== */
+
+.match-card {
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    padding: 18px;
+
+    margin-bottom: 20px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+
+    overflow: hidden;
+
+    position: relative;
+
+}
+
+/* Top Green Strip */
+
+.match-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:6px;
+
+    background:linear-gradient(90deg,#00b140,#009e60);
+
+}
+
+/* ===========================
+   CARD HEADER
+=========================== */
+
+.match-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:18px;
+
+}
+
+.match-type{
+
+    background:#00b140;
+
+    color:#fff;
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+.match-date{
+
+    font-size:13px;
+
+    color:#666;
+
+}
+
+/* ===========================
+   TEAM SECTION
+=========================== */
+
+.teams-section{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin:20px 0;
+
+}
+
+.team{
+
+    width:38%;
+
+    text-align:center;
+
+}
+
+.team-logo{
+
+    width:70px;
+
+    height:70px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:4px solid #f3f3f3;
+
+    background:#fff;
+
+    box-shadow:0 6px 12px rgba(0,0,0,.12);
+
+}
+
+.team h5{
+
+    margin-top:12px;
+
+    font-size:17px;
+
+    font-weight:700;
+
+    color:#222;
+
+}
+
+.vs-section{
+
+    width:24%;
+
+    text-align:center;
+
+}
+
+.vs{
+
+    width:55px;
+
+    height:55px;
+
+    background:#0057b8;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    margin:auto;
+
+    font-weight:700;
+
+    font-size:17px;
+
+    box-shadow:0 6px 15px rgba(0,87,184,.3);
+
+}
+
+/* ===========================
+   MATCH INFO
+=========================== */
+
+.match-info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:18px;
+
+    font-size:14px;
+
+    color:#666;
+
+    border-top:1px solid #ececec;
+
+    padding-top:15px;
+
+}
+
+.match-info div{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+/* ===========================
+   BUTTON
+=========================== */
+
+.predict-btn{
+
+    width:100%;
+
+    margin-top:20px;
+
+    background:linear-gradient(90deg,#0057b8,#003f8a);
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:14px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.predict-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 20px rgba(0,87,184,.25);
+
+}
+
+/* ===========================
+   EMPTY STATE
+=========================== */
+
+.no-match{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    padding:50px 20px;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.08);
+
+}
+
+.no-match h4{
+
+    margin-top:20px;
+
+    font-weight:700;
+
+}
+
+.no-match p{
+
+    color:#777;
+
+    margin-top:10px;
+
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media(max-width:768px){
+
+.team-logo{
+
+    width:60px;
+
+    height:60px;
+
+}
+
+.team h5{
+
+    font-size:15px;
+
+}
+
+.vs{
+
+    width:48px;
+
+    height:48px;
+
+    font-size:15px;
+
+}
+
+.match-card{
+
+    padding:16px;
+
+}
+
+}

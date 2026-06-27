@@ -47,3 +47,16 @@ BEGIN
     ADD CONSTRAINT UQ_Users_Mobile UNIQUE (Mobile);
 END
 GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'TeamName'AND Object_ID = Object_ID('Users'))
+BEGIN
+    ALTER TABLE Users
+    ADD TeamName VARCHAR(100);
+END
+GO
+
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'ProfileImage' AND Object_ID = Object_ID('Users'))
+BEGIN
+    ALTER TABLE Users
+    ADD ProfileImage NVARCHAR(MAX);
+END
+GO

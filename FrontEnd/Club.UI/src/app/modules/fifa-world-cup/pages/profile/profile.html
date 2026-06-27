@@ -1,58 +1,52 @@
 <div class="profile-page">
 
-    <!-- Header -->
-    <div class="profile-header">
+    <div class="profile-card">
 
-        <button
-            class="back-btn"
-            (click)="goBack()">
+        <!-- Card Header -->
+        <div class="card-header">
 
-            <i class="bi bi-arrow-left"></i>
+            <button class="back-btn" (click)="goBack()">
 
-        </button>
+                <i class="bi bi-arrow-left"></i>
 
-        <h2>My Profile</h2>
+            </button>
 
-    </div>
-
-    <!-- Profile Image -->
-    <div class="profile-top">
-
-        <div class="image-section">
-
-            <img
-                [src]="profileImage"
-                class="profile-image"
-                alt="Profile">
-
-            <label class="camera-btn">
-
-                <i class="bi bi-camera-fill"></i>
-
-                <input
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    (change)="onImageSelected($event)">
-
-            </label>
+            <h2>My Profile</h2>
 
         </div>
 
-    </div>
+        <!-- Profile Image -->
+        <div class="profile-top">
 
-    <!-- Main Card -->
-    <div class="profile-card">
+            <div class="image-section">
+
+                <img [src]="profileImage" class="profile-image" alt="Profile"
+                    (error)="profileImage='/Profile/DefaultProfile.png'">
+
+                <label class="camera-btn">
+
+                    <i class="bi bi-camera-fill"></i>
+
+                    <input type="file" accept="image/*" hidden (change)="onImageSelected($event)">
+                    <!-- <input type="file" accept="image/*" (change)="onImageSelected($event)"> -->
+
+                </label>
+
+            </div>
+
+        </div>
+
+        <!-- User Details -->
 
         <h3 class="user-name">
 
-            {{profile.userName}}
+            {{ profile.userName }}
 
         </h3>
 
         <p class="user-email">
 
-            {{profile.email}}
+            {{ profile.email }}
 
         </p>
 
@@ -64,7 +58,7 @@
 
                 <i class="bi bi-trophy-fill"></i>
 
-                <h4>{{profile.totalPoints}}</h4>
+                <h4>{{ profile.totalPoints }}</h4>
 
                 <span>Total Points</span>
 
@@ -74,7 +68,7 @@
 
                 <i class="bi bi-award-fill"></i>
 
-                <h4>#{{profile.rank}}</h4>
+                <h4>#{{ profile.rank }}</h4>
 
                 <span>Rank</span>
 
@@ -84,7 +78,7 @@
 
                 <i class="bi bi-controller"></i>
 
-                <h4>{{profile.totalPrediction}}</h4>
+                <h4>{{ profile.totalPrediction }}</h4>
 
                 <span>Predictions</span>
 
@@ -106,10 +100,7 @@
 
                 </label>
 
-                <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="profile.userName">
+                <input type="text" class="form-control" [(ngModel)]="profile.userName">
 
             </div>
 
@@ -117,50 +108,49 @@
 
                 <label>
 
-                    <i class="bi bi-envelope"></i>
+                    <i class="bi bi-flag-fill"></i>
 
-                    Email
+                    Favourite Team
 
                 </label>
 
-                <input
-                    type="email"
-                    class="form-control"
-                    [value]="profile.email"
-                    readonly>
+                <select class="form-control" [(ngModel)]="profile.teamName">
+
+                    <option value="">Select Team</option>
+
+                    <option *ngFor="let team of teams" [value]="team">
+
+                        {{team}}
+
+                    </option>
+
+                </select>
+
+            </div>
+            <!-- Buttons -->
+
+            <div class="button-section">
+
+                <button class="btn-save" (click)="saveProfile()">
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Save Changes
+
+                </button>
+
+                <button class="btn-logout" (click)="logout()">
+
+                    <i class="bi bi-box-arrow-right"></i>
+
+                    Logout
+
+                </button>
 
             </div>
 
         </div>
 
-        <!-- Buttons -->
-
-        <div class="button-section">
-
-            <button
-                class="btn-save"
-                (click)="saveProfile()">
-
-                <i class="bi bi-check-circle"></i>
-
-                Save Changes
-
-            </button>
-
-            <button
-                class="btn-logout"
-                (click)="logout()">
-
-                <i class="bi bi-box-arrow-right"></i>
-
-                Logout
-
-            </button>
-
-        </div>
-
     </div>
 
-</div>
-
-<app-footer></app-footer>   
+    <app-footer></app-footer>

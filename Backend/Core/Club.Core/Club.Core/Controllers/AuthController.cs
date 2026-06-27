@@ -64,6 +64,8 @@ namespace Club.Core.Controllers
                         UserID = 0,
                         UserName = "",
                         Email = "",
+                        TeamName = "",
+                        ProfileImage = "",
                         Message = "Invalid UserName or Password"
                     });
                 }
@@ -76,25 +78,12 @@ namespace Club.Core.Controllers
                     UserID = dt.Rows[0]["UserID"],
                     UserName = dt.Rows[0]["UserName"],
                     Email = dt.Rows[0]["Email"],
+                    TeamName = dt.Rows[0]["TeamName"],
+                    ProfileImage = dt.Rows[0]["ProfileImage"],
                     Message = "Login Successful"
                 });
 
-                //if (dt.Rows.Count == 0)
-                //{
-                //    return BadRequest(new 
-                //    {
-                //        Success = false,
-                //        Message = "Invalid UserName or Password"
-                //    });
-                //}
-
-                //return Ok(new
-                //{
-                //    Success = true,
-                //    UserID = dt.Rows[0]["UserID"],
-                //    UserName = dt.Rows[0]["UserName"],
-                //    Email = dt.Rows[0]["Email"] 
-                //});
+                
             }
             catch (Exception ex)
             {

@@ -1,0 +1,57 @@
+<div class="notification-container">
+
+    @for(item of notifications; track item.id){
+
+    <div class="notification-card" [ngClass]="item.type">
+
+        <div class="notification-header">
+
+            <div class="notification-title">
+
+                @switch(item.type){
+
+                @case('success'){
+                <i class="bi bi-check-circle-fill icon success-icon"></i>
+                }
+
+                @case('error'){
+                <i class="bi bi-x-circle-fill icon error-icon"></i>
+                }
+
+                @case('warning'){
+                <i class="bi bi-exclamation-triangle-fill icon warning-icon"></i>
+                }
+
+                @default{
+                <i class="bi bi-info-circle-fill icon info-icon"></i>
+                }
+
+                }
+
+                <span>{{item.title}}</span>
+
+            </div>
+
+            <button
+                class="close-btn"
+                (click)="close(item.id)">
+
+                <i class="bi bi-x-lg"></i>
+
+            </button>
+
+        </div>
+
+        <div class="notification-message">
+
+            {{item.message}}
+
+        </div>
+
+        <div class="progress"></div>
+
+    </div>
+
+    }
+
+</div>

@@ -44,5 +44,113 @@
 
 </section>
 
+<!-- Upcoming Matches -->
+
+<section class="matches-section">
+
+    <div class="section-header">
+
+        <h3>
+            <i class="bi bi-calendar-event-fill"></i>
+            Upcoming Matches
+        </h3>
+
+        <span>{{todayMatches.length}} Matches</span>
+
+    </div>
+
+   <div *ngIf="todayMatches.length > 0; else noMatches">
+
+    <div class="match-card" *ngFor="let match of todayMatches; trackBy: trackByMatchId">
+
+        <div class="match-top">
+
+            <span class="match-type">
+                {{ match.type | uppercase }}
+            </span>
+
+            <span class="match-date">
+                <i class="bi bi-calendar3"></i>
+                {{ match.date }}
+            </span>
+
+        </div>
+
+        <div class="teams-section">
+
+            <div class="team">
+
+                <img
+                    [src]="match.homeFlag"
+                    class="team-logo"
+                    alt="{{ match.homeTeam }}">
+
+                <h5>{{ match.homeTeam }}</h5>
+
+            </div>
+
+            <div class="vs-section">
+
+                <span class="vs">VS</span>
+
+            </div>
+
+            <div class="team">
+
+                <img
+                    [src]="match.awayFlag"
+                    class="team-logo"
+                    alt="{{ match.awayTeam }}">
+
+                <h5>{{ match.awayTeam }}</h5>
+
+            </div>
+
+        </div>
+
+        <div class="match-info">
+
+            <div>
+                <i class="bi bi-people-fill"></i>
+                Group {{ match.group }}
+            </div>
+
+            <div>
+                <i class="bi bi-clock-fill"></i>
+                {{ match.timeElapsed }}
+            </div>
+
+        </div>
+
+        <button class="predict-btn">
+
+            <i class="bi bi-controller"></i>
+
+            Predict Match
+
+        </button>
+
+    </div>
+
+</div>
+
+<ng-template #noMatches>
+
+    <div class="no-match">
+
+        <img
+            src="/FIFALogo/FIFA-2026-World-Cup.png"
+            width="90">
+
+        <h4>No Upcoming Matches</h4>
+
+        <p>Check back later for the next fixtures.</p>
+
+    </div>
+
+</ng-template>
+
+</section>
+
 
 <app-footer></app-footer>   
