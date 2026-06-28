@@ -7,8 +7,7 @@
 
             <div class="logo-section">
 
-                <img src="/FIFALogo/FIFA-2026-World-Cup.png"
-                     class="logo">
+                <img src="/FIFALogo/FIFA-2026-World-Cup.png" class="logo">
 
                 <div class="title-section">
                     <h5>FIFA World Cup 2026</h5>
@@ -17,11 +16,11 @@
 
             </div>
 
-        <div class="profile-section" routerLink="/profile">
-        
-            <img [src]="profileImage" class="profile-image">
-        
-        </div>
+            <div class="profile-section" routerLink="/profile">
+
+                <img [src]="profileImage" class="profile-image">
+
+            </div>
 
         </header>
 
@@ -59,33 +58,129 @@
 
     </div>
 
-   <div *ngIf="todayMatches.length > 0; else noMatches">
+    <div *ngIf="todayMatches.length > 0; else noMatches">
 
-    <div class="match-card" *ngFor="let match of todayMatches; trackBy: trackByMatchId">
+        <div class="match-card" *ngFor="let match of todayMatches; trackBy: trackByMatchId">
 
-        <div class="match-top">
+            <div class="match-top">
 
-            <span class="match-type">
-                {{ match.type | uppercase }}
-            </span>
+                <span class="match-type">
+                    {{ match.type }}
+                </span>
 
-            <span class="match-date">
-                <i class="bi bi-calendar3"></i>
-                {{ match.date }}
-            </span>
+                <span class="match-date">
+                    <i class="bi bi-calendar3"></i>
+                    {{ match.formattedDate }}
+                </span>
+
+            </div>
+
+            <div class="teams-section">
+
+                <div class="team">
+
+                    <img [src]="match.homeFlag" class="team-logo" alt="{{ match.homeTeam }}">
+
+                    <h5>{{ match.homeTeam }}</h5>
+
+                </div>
+
+                <div class="vs-section">
+
+                    <span class="vs">VS</span>
+
+                </div>
+
+                <div class="team">
+
+                    <img [src]="match.awayFlag" class="team-logo" alt="{{ match.awayTeam }}">
+
+                    <h5>{{ match.awayTeam }}</h5>
+
+                </div>
+
+            </div>
+
+            <div class="match-info">
+
+                <div>
+                    <i class="bi bi-people-fill"></i>
+                    Group {{ match.group }}
+                </div>
+                <div class="countdown">
+
+                    <i class="bi bi-hourglass-split"></i>
+
+                    Starts in {{ match.countdown }}
+
+                </div>
+
+            </div>
+
+            <!-- <button class="predict-btn" [disabled]="match.predictionClosed" (click)="openPrediction(match)">
+
+                <i class="bi bi-controller"></i>
+
+                {{ match.predictionClosed ? 'Prediction Closed' : 'Predict Match' }}
+
+            </button> -->
+            <button class="predict-btn" [disabled]="match.predictionClosed || !match.teamsReady"
+                (click)="openPrediction(match)">
+
+                <i class="bi bi-controller"></i>
+
+                {{
+                !match.teamsReady
+                ? 'Teams Not Confirmed'
+                : (match.predictionClosed
+                ? 'Prediction Closed'
+                : 'Predict Match')
+                }}
+
+            </button>
 
         </div>
 
-        <div class="teams-section">
+    </div>
+
+    <ng-template #noMatches>
+
+        <div class="no-match">
+
+            <img src="/FIFALogo/FIFA-2026-World-Cup.png" width="90">
+
+            <h4>No Upcoming Matches</h4>
+
+            <p>Check back later for the next fixtures.</p>
+
+        </div>
+
+    </ng-template>
+
+</section>
+
+<!-- Prediction Modal -->
+<div class="prediction-overlay" *ngIf="showPredictionModal">
+
+    <div class="prediction-modal">
+
+        <div class="modal-header">
+
+            <h4>Match Prediction</h4>
+
+            <button class="close-btn" (click)="closePrediction()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+        <div class="match-preview">
 
             <div class="team">
 
-                <img
-                    [src]="match.homeFlag"
-                    class="team-logo"
-                    alt="{{ match.homeTeam }}">
+                <img [src]="selectedMatch?.homeFlag">
 
-                <h5>{{ match.homeTeam }}</h5>
+                <h5>{{ selectedMatch?.homeTeam }}</h5>
 
             </div>
 
@@ -97,36 +192,65 @@
 
             <div class="team">
 
-                <img
-                    [src]="match.awayFlag"
-                    class="team-logo"
-                    alt="{{ match.awayTeam }}">
+                <img [src]="selectedMatch?.awayFlag">
 
-                <h5>{{ match.awayTeam }}</h5>
+                <h5>{{ selectedMatch?.awayTeam }}</h5>
 
             </div>
 
         </div>
 
-        <div class="match-info">
+        <label class="label">
+            Predict Final Score
+        </label>
 
-            <div>
-                <i class="bi bi-people-fill"></i>
-                Group {{ match.group }}
+        <div class="score-box">
+
+            <div class="score-team">
+
+                <button class="score-btn" (click)="decreaseHomeScore()">
+                    <i class="bi bi-dash-lg"></i>
+                </button>
+
+                <input type="number" min="0" [(ngModel)]="prediction.homeScore" (ngModelChange)="updatePrediction()">
+
+                <button class="score-btn" (click)="increaseHomeScore()">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+
             </div>
 
-            <div>
-                <i class="bi bi-clock-fill"></i>
-                {{ match.timeElapsed }}
+            <span class="dash">-</span>
+
+            <div class="score-team">
+
+                <button class="score-btn" (click)="decreaseAwayScore()">
+                    <i class="bi bi-dash-lg"></i>
+                </button>
+
+                <input type="number" min="0" [(ngModel)]="prediction.awayScore" (ngModelChange)="updatePrediction()">
+
+                <button class="score-btn" (click)="increaseAwayScore()">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+
             </div>
 
         </div>
 
-        <button class="predict-btn">
+        <div class="prediction-result">
 
-            <i class="bi bi-controller"></i>
+            <i class="bi bi-trophy-fill"></i>
 
-            Predict Match
+            {{ predictionResult }}
+
+        </div>
+
+        <button class="save-btn" (click)="savePrediction()">
+
+            <i class="bi bi-check-circle-fill"></i>
+
+            Save Prediction
 
         </button>
 
@@ -134,23 +258,4 @@
 
 </div>
 
-<ng-template #noMatches>
-
-    <div class="no-match">
-
-        <img
-            src="/FIFALogo/FIFA-2026-World-Cup.png"
-            width="90">
-
-        <h4>No Upcoming Matches</h4>
-
-        <p>Check back later for the next fixtures.</p>
-
-    </div>
-
-</ng-template>
-
-</section>
-
-
-<app-footer></app-footer>   
+<app-footer></app-footer>

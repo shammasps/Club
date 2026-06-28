@@ -22,3 +22,6 @@ export class App {
 // this.notification.warning('Prediction time expired');
 
 // this.notification.info('Welcome Shammas');
+
+// private cdr: ChangeDetectorRef
+// this.cdr.detectChanges();

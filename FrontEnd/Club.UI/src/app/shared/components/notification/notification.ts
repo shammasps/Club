@@ -23,15 +23,6 @@ export class Notification implements OnInit {
     ) {}
 
     ngOnInit() {
-
-      this.notifications = [
-    {
-      id: 1,
-      type: 'success',
-      title: 'Success',
-      message: 'Hello World'
-    }
-  ];
     this.notificationService.notifications$
       .subscribe(res => {
 

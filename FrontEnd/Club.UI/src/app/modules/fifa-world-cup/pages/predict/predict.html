@@ -1,1 +1,120 @@
-<p>predict works!</p>
+<div class="prediction-page">
+
+    <div class="page-header">
+
+        <h2>
+            <i class="bi bi-controller"></i>
+            My Predictions
+        </h2>
+
+        <span>{{predictions.length}} Predictions</span>
+
+    </div>
+
+    <div
+        class="prediction-card"
+        *ngFor="let item of predictions">
+
+        <div class="card-header">
+
+            <span class="match-type">
+
+                {{item.matchType}}
+
+            </span>
+
+            <span class="match-date">
+
+                <i class="bi bi-calendar-event"></i>
+
+                {{item.matchDate}}
+
+            </span>
+
+        </div>
+
+        <div class="teams-section">
+
+            <div class="team">
+
+                <img
+                    [src]="item.homeFlag"
+                    class="team-logo">
+
+                <h5>{{item.homeTeam}}</h5>
+
+            </div>
+
+            <div class="vs-score">
+
+                <span class="score">
+
+                    {{item.homeScore}}
+
+                    <span>-</span>
+
+                    {{item.awayScore}}
+
+                </span>
+
+                <small>Prediction</small>
+
+            </div>
+
+            <div class="team">
+
+                <img
+                    [src]="item.awayFlag"
+                    class="team-logo">
+
+                <h5>{{item.awayTeam}}</h5>
+
+            </div>
+
+        </div>
+
+        <div class="prediction-result">
+
+            <div class="winner">
+
+                <i class="bi bi-trophy-fill"></i>
+
+                {{item.winner}}
+
+            </div>
+
+            <span
+                *ngIf="item.finished=='FALSE'"
+                class="status upcoming">
+
+                <i class="bi bi-clock-fill"></i>
+
+                Upcoming
+
+            </span>
+
+            <span
+                *ngIf="item.finished=='TRUE'"
+                class="status finished">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                Finished
+
+            </span>
+
+        </div>
+
+        <button
+            *ngIf="item.finished=='FALSE'"
+            class="edit-btn">
+
+            <i class="bi bi-pencil-square"></i>
+
+            Edit Prediction
+
+        </button>
+
+    </div>
+
+</div>

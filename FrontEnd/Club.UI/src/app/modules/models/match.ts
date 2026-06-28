@@ -15,5 +15,11 @@ export interface Match {
     time_elapsed:string;
 
     type:string;
+    
+    group: string;
+
+    home_team_label?: string;
+
+    away_team_label?: string;
 
 }

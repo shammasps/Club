@@ -60,3 +60,59 @@ BEGIN
     ADD ProfileImage NVARCHAR(MAX);
 END
 GO
+
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'FIFAPrediction')
+BEGIN
+
+  CREATE TABLE FIFAPrediction
+(
+    PredictionID INT IDENTITY(1,1) PRIMARY KEY,
+
+    UserID INT NOT NULL,
+
+    MatchID INT NOT NULL,
+
+    HomeScore INT NOT NULL,
+
+    AwayScore INT NOT NULL,
+
+    Winner NVARCHAR(100) NOT NULL,
+
+    CreatedDate DATETIME DEFAULT(GETDATE()),
+
+    UpdatedDate DATETIME NULL
+)
+
+END
+GO
+
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'HomeTeam' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD HomeTeam NVARCHAR(100);
+END
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'AwayTeam' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD AwayTeam NVARCHAR(100);
+END
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'MatchDate' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD MatchDate NVARCHAR(100);
+END
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'MatchType' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD MatchType NVARCHAR(100);
+END
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'Finished' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD Finished NVARCHAR(100);
+END
+GO

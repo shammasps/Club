@@ -1,0 +1,204 @@
+.prediction-page{
+
+    padding:20px;
+    background:#f5f7fb;
+    min-height:100vh;
+
+}
+
+.page-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+
+}
+
+.page-header h2{
+
+    margin:0;
+    font-size:24px;
+    font-weight:700;
+    color:#1b1b1b;
+
+}
+
+.page-header span{
+
+    background:#0d6efd;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+
+}
+
+.prediction-card{
+
+    background:#fff;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+
+}
+
+.card-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+
+}
+
+.match-type{
+
+    background:#0d6efd;
+    color:#fff;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+
+}
+
+.match-date{
+
+    font-size:13px;
+    color:#666;
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+}
+
+.teams-section{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:20px 0;
+
+}
+
+.team{
+
+    width:110px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+
+}
+
+.team-logo{
+
+    width:65px;
+    height:65px;
+    object-fit:contain;
+    margin-bottom:10px;
+
+}
+
+.team h5{
+
+    margin:0;
+    font-size:15px;
+    font-weight:600;
+
+}
+
+.vs-score{
+
+    text-align:center;
+
+}
+
+.score{
+
+    display:block;
+    font-size:32px;
+    font-weight:700;
+    color:#0d6efd;
+
+}
+
+.vs-score small{
+
+    color:#888;
+    font-size:12px;
+
+}
+
+.prediction-result{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+    background:#f8f9fa;
+    border-radius:14px;
+    margin-top:15px;
+
+}
+
+.winner{
+
+    font-weight:700;
+    color:#222;
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+}
+
+.status{
+
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:5px;
+
+}
+
+.upcoming{
+
+    background:#e7f8ed;
+    color:#198754;
+
+}
+
+.finished{
+
+    background:#ffe8e8;
+    color:#dc3545;
+
+}
+
+.edit-btn{
+
+    margin-top:18px;
+    width:100%;
+    border:none;
+    border-radius:12px;
+    background:#0d6efd;
+    color:#fff;
+    padding:13px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+.edit-btn:hover{
+
+    background:#0b5ed7;
+
+}
