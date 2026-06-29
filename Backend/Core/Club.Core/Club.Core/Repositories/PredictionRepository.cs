@@ -74,6 +74,55 @@ namespace Club.Core.Repositories
 
             return dt;
         }
+
+        public DataTable CalculatePredictionPoints(PredictionPointDTO obj)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection con = _db.GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand("spCalculatePredictionPoints", con);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@MatchID", obj.MatchID);
+
+                cmd.Parameters.AddWithValue("@HomeScore", obj.HomeScore);
+
+                cmd.Parameters.AddWithValue("@AwayScore", obj.AwayScore);
+
+                cmd.Parameters.AddWithValue("@Winner", obj.Winner);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+                da.Fill(dt);
+            }
+
+            return dt;
+        }
+
+
+        public DataTable GetLeaderboard()
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection con = _db.GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand("spLeaderboardGet", con);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+                da.Fill(dt);
+            }
+
+            return dt;
+        }
+
+
+
     }
+
 
 }

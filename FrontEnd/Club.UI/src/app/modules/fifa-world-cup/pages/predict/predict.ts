@@ -3,10 +3,13 @@ import { PredictionService } from '../../../../core/services/predictionServices/
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatchService } from '../../../../core/services/matchServices/match-service';
+import { Footer } from '../../components/footer/footer';
+import { DateTime } from 'luxon';
+import { NotificationService } from '../../../../core/services/notification/notification-service';
 
 @Component({
   selector: 'app-predict',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, Footer],
   templateUrl: './predict.html',
   styleUrl: './predict.css',
 })
@@ -15,11 +18,12 @@ export class Predict {
   predictions: any[] = [];
   teams: any[] = [];
 
-matches: any[] = [];
+  matches: any[] = [];
 
   constructor(
     private predictionService: PredictionService,
     private matchService: MatchService,
+    private notification: NotificationService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -29,141 +33,485 @@ matches: any[] = [];
 
 
   }
-loadTeams() {
+  loadTeams() {
 
-  this.matchService.getTeams()
-    .subscribe({
+    this.matchService.getTeams()
+      .subscribe({
 
-      next: (res: any) => {
+        next: (res: any) => {
 
-        this.teams = res.teams;
+          this.teams = res.teams;
 
-        this.loadMatches();
+          this.loadMatches();
 
-      },
+        },
 
-      error: err => console.log(err)
+        error: err => console.log(err)
 
-    });
+      });
 
-}
+  }
 
-loadMatches() {
+  loadMatches() {
 
-  this.matchService.getMatches()
-    .subscribe({
+    this.matchService.getMatches()
+      .subscribe({
 
-      next: (res: any) => {
+        next: (res: any) => {
 
-        this.matches = res.games;
+          this.matches = res.games;
 
-        this.loadPredictions();
+          this.loadPredictions();
 
-      },
+        },
 
-      error: err => {
+        error: err => {
 
-        console.log(err);
-
-      }
-
-    });
-
-}
-loadPredictions() {
-
-  const userId =
-    Number(localStorage.getItem('UserID'));
-
-  this.predictionService
-    .getPredictions(userId)
-    .subscribe({
-
-      next: (res: any) => {
-
-        if (!res.success) {
-
-          this.predictions = [];
-
-          return;
+          console.log(err);
 
         }
 
-        this.predictions = res.predictions.map((p: any) => {
+      });
 
-          // Find match by MatchID
-          const match = this.matches.find(
-            (m: any) => Number(m.id) === Number(p.matchID)
-          );
+  }
+  loadPredictions() {
 
-          // Find team flags
-          const home = this.teams.find(
-            (t: any) =>
-              t.id == match?.home_team_id
-          );
+    const userId =
+      Number(localStorage.getItem('UserID'));
 
-          const away = this.teams.find(
-            (t: any) =>
-              t.id == match?.away_team_id
-          );
+    this.predictionService
+      .getPredictions(userId)
+      .subscribe({
 
-          return {
+        next: (res: any) => {
 
-            ...p,
+          if (!res.success) {
 
-            // Latest match details from API
-            homeTeam:
-              match?.home_team_name_en ??
-              p.homeTeam,
+            this.predictions = [];
 
-            awayTeam:
-              match?.away_team_name_en ??
-              p.awayTeam,
+            return;
 
-            matchDate:
-              match?.local_date ??
-              p.matchDate,
+          }
 
-            matchType:
-              match?.type ??
-              p.matchType,
+          this.predictions = res.predictions.map((p: any) => {
 
-            finished:
-              match?.finished ??
-              p.finished,
+            // Find match by MatchID
+            const match = this.matches.find(
+              (m: any) => Number(m.id) === Number(p.matchID)
+            );
 
-            group:
-              match?.group,
+            // Find team flags
+            const home = this.teams.find(
+              (t: any) =>
+                t.id == match?.home_team_id
+            );
 
-            stadiumID:
-              match?.stadium_id,
+            const away = this.teams.find(
+              (t: any) =>
+                t.id == match?.away_team_id
+            );
 
-            homeFlag:
-              home?.flag ??
-              '/FIFALogo/team-placeholder.png',
+            return {
 
-            awayFlag:
-              away?.flag ??
-              '/FIFALogo/team-placeholder.png'
+              ...p,
 
-          };
+              // Latest match details from API
+              homeTeam:
+                match?.home_team_name_en ??
+                p.homeTeam,
 
-        });
+              awayTeam:
+                match?.away_team_name_en ??
+                p.awayTeam,
 
-        console.log(this.predictions);
+              matchDate:
+                this.formatMatchDate(
+                  match?.local_date,
+                  Number(match?.stadium_id)
+                ),
+
+              matchDateObject:
+                this.convertDate(
+                  match?.local_date,
+                  Number(match?.stadium_id)
+                ),
+
+              matchType: this.getMatchType(match?.type),
+
+              finished:
+                match?.finished ??
+                p.finished,
+
+              group:
+                match?.group,
+
+              stadiumID:
+                match?.stadium_id,
+
+              homeFlag:
+                home?.flag ??
+                '/FIFALogo/team-placeholder.png',
+
+              awayFlag:
+                away?.flag ??
+                '/FIFALogo/team-placeholder.png'
+
+            };
+
+          });
+          this.startCountdown();
+          console.log(this.predictions);
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: err => {
+
+          console.log(err);
+
+        }
+
+      });
+
+  }
+
+  getMatchType(type: string): string {
+
+    switch ((type || '').toLowerCase()) {
+
+      case 'group':
+        return 'Group Stage';
+
+      case 'r32':
+        return 'Round of 32';
+
+      case 'r16':
+        return 'Round of 16';
+
+      case 'qf':
+        return 'Quarter Final';
+
+      case 'sf':
+        return 'Semi Final';
+
+      case 'third':
+        return '3rd Place Playoff';
+
+      case 'final':
+        return 'Final';
+
+      default:
+        return type;
+
+    }
+
+  }
+
+  convertDate(date: string, stadiumID: number): Date {
+
+    const zone =
+      this.stadiumTimeZones[stadiumID] ??
+      'America/New_York';
+
+    const dt = DateTime.fromFormat(
+
+      date,
+
+      'MM/dd/yyyy HH:mm',
+
+      { zone }
+
+    );
+
+    return dt
+      .setZone('Asia/Kolkata')
+      .toJSDate();
+
+  }
+  formatMatchDate(
+    date: string,
+    stadiumID: number
+  ): string {
+
+    const zone =
+      this.stadiumTimeZones[stadiumID] ??
+      'America/New_York';
+
+    return DateTime
+      .fromFormat(
+
+        date,
+
+        'MM/dd/yyyy HH:mm',
+
+        { zone }
+
+      )
+      .setZone('Asia/Kolkata')
+      .toFormat(
+        "ccc, dd LLL yyyy • hh:mm a"
+      );
+
+  }
+
+  private countdownInterval: any;
+  startCountdown() {
+
+    this.updateCountdown();
+
+    clearInterval(this.countdownInterval);
+
+    this.countdownInterval =
+      setInterval(() => {
+
+        this.updateCountdown();
 
         this.cdr.detectChanges();
 
-      },
+      }, 1000);
 
-      error: err => {
+  }
+updateCountdown() {
 
-        console.log(err);
+  const now = Date.now();
 
-      }
+  this.predictions.forEach(item => {
 
-    });
+    const diff =
+      item.matchDateObject.getTime() - now;
+
+    // Same logic as Home page
+    const predictionCloseTime =
+      item.matchDateObject.getTime() - (10 * 60 * 1000);
+
+    item.predictionClosed = now >= predictionCloseTime;
+
+    if (diff <= 0) {
+
+      item.countdown = 'Kick Off';
+
+      item.predictionClosed = true;
+
+      return;
+
+    }
+
+    const days = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const minutes = Math.floor((diff % 3600000) / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+
+    item.countdown =
+      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+  });
 
 }
+
+  ngOnDestroy() {
+
+    clearInterval(this.countdownInterval);
+
+  }
+
+  private stadiumTimeZones: { [key: number]: string } = {
+
+    1: 'America/Mexico_City',
+    2: 'America/Mexico_City',
+    3: 'America/Monterrey',
+
+    4: 'America/Chicago',
+    5: 'America/Chicago',
+    6: 'America/Chicago',
+
+    7: 'America/New_York',
+    8: 'America/New_York',
+    9: 'America/New_York',
+    10: 'America/New_York',
+    11: 'America/New_York',
+
+    12: 'America/Toronto',
+
+    13: 'America/Vancouver',
+
+    14: 'America/Los_Angeles',
+    15: 'America/Los_Angeles',
+    16: 'America/Los_Angeles'
+
+  };
+
+
+  showPredictionModal = false;
+
+  selectedMatch: any = null;
+
+  prediction = {
+
+    homeScore: 0,
+
+    awayScore: 0
+
+  };
+
+  predictionResult = 'Draw';
+
+  editPrediction(item: any) {
+
+ if (item.predictionClosed) {
+
+    this.notification.warning(
+      'Prediction is closed.'
+    );
+
+    return;
+
+  }
+
+    this.selectedMatch = item;
+
+    this.prediction = {
+
+      homeScore: item.homeScore,
+
+      awayScore: item.awayScore
+
+    };
+
+    this.updatePrediction();
+
+    this.showPredictionModal = true;
+
+  }
+
+  closePrediction() {
+
+    this.showPredictionModal = false;
+
+  }
+
+  updatePrediction() {
+
+    if (this.prediction.homeScore > this.prediction.awayScore) {
+
+      this.predictionResult =
+        `${this.selectedMatch.homeTeam} Wins`;
+
+    }
+    else if (this.prediction.homeScore < this.prediction.awayScore) {
+
+      this.predictionResult =
+        `${this.selectedMatch.awayTeam} Wins`;
+
+    }
+    else {
+
+      this.predictionResult = 'Draw';
+
+    }
+
+  }
+
+  increaseHomeScore() {
+
+    this.prediction.homeScore++;
+
+    this.updatePrediction();
+
+  }
+
+  decreaseHomeScore() {
+
+    if (this.prediction.homeScore > 0) {
+
+      this.prediction.homeScore--;
+
+      this.updatePrediction();
+
+    }
+
+  }
+
+  increaseAwayScore() {
+
+    this.prediction.awayScore++;
+
+    this.updatePrediction();
+
+  }
+
+  decreaseAwayScore() {
+
+    if (this.prediction.awayScore > 0) {
+
+      this.prediction.awayScore--;
+
+      this.updatePrediction();
+
+    }
+
+  }
+
+  savePrediction() {
+
+    const data = {
+
+      userID: Number(localStorage.getItem('UserID')),
+
+      matchID: this.selectedMatch.matchID,
+
+      homeTeam: this.selectedMatch.homeTeam,
+
+      awayTeam: this.selectedMatch.awayTeam,
+
+      homeScore: this.prediction.homeScore,
+
+      awayScore: this.prediction.awayScore,
+
+      matchDate: this.selectedMatch.matchDate,
+
+      matchType: this.selectedMatch.matchType,
+
+      finished: this.selectedMatch.finished,
+
+      winner:
+
+        this.prediction.homeScore >
+          this.prediction.awayScore
+
+          ? this.selectedMatch.homeTeam
+
+          : this.prediction.homeScore <
+            this.prediction.awayScore
+
+            ? this.selectedMatch.awayTeam
+
+            : 'Draw'
+
+    };
+
+    this.predictionService
+      .savePrediction(data)
+      .subscribe({
+
+        next: (res: any) => {
+
+          this.notification.success(res.message);
+
+          this.showPredictionModal = false;
+
+          this.loadPredictions();
+          this.cdr.detectChanges();
+        },
+
+        error: (err) => {
+
+          this.notification.error(err.error?.message);
+
+        }
+
+      });
+
+  }
 
 }

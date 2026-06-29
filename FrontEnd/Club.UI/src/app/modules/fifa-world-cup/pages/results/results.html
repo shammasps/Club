@@ -1,0 +1,162 @@
+<div class="results-page">
+
+    <div class="page-header">
+
+        <h2>
+
+            <i class="bi bi-trophy-fill"></i>
+
+            Match Results
+
+        </h2>
+
+        <span>{{finishedMatches.length}} Matches</span>
+
+    </div>
+
+    <div class="result-card" *ngFor="let match of finishedMatches">
+
+        <!-- Top -->
+
+        <div class="card-top">
+
+            <span class="match-type">
+
+                {{getMatchType(match.type)}}
+
+            </span>
+
+            <span class="match-date">
+
+                <i class="bi bi-calendar-event"></i>
+
+                {{match.date}}
+
+            </span>
+
+        </div>
+
+        <!-- Teams -->
+
+        <div class="teams-section">
+
+            <div class="team">
+
+                <img [src]="match.homeFlag" (error)="
+    match.homeFlag='/FIFALogo/team-placeholder.png'
+  " class="team-logo">
+
+                <h5>{{match.homeTeam}}</h5>
+
+            </div>
+
+            <div class="score-section">
+
+                <span class="score">
+
+                    {{match.homeScore}}
+
+                    <span>-</span>
+
+                    {{match.awayScore}}
+
+                </span>
+
+                <small>FULL TIME</small>
+
+            </div>
+
+            <div class="team">
+
+
+                <img [src]="match.awayFlag" (error)="
+    match.awayFlag='/FIFALogo/team-placeholder.png'
+  " class="team-logo">
+
+                <h5>{{match.awayTeam}}</h5>
+
+            </div>
+
+        </div>
+
+        <!-- Winner -->
+
+        <div class="winner-box">
+
+            <i class="bi bi-trophy-fill"></i>
+
+            Winner :
+
+            <strong>
+
+                {{
+                +match.homeScore > +match.awayScore
+                ? match.homeTeam
+                : +match.homeScore < +match.awayScore ? match.awayTeam : 'Draw' }} </strong>
+
+        </div>
+
+        <!-- Goal Scorers -->
+
+        <div class="goal-box">
+
+            <div class="goal-team">
+
+                <h6>{{match.homeTeam}}</h6>
+
+                <!-- <p>{{match.homeScorers || '-'}}</p> -->
+                 <div *ngIf="formatScorers(match.homeScorers).length; else noHomeGoals">
+
+    <div
+        class="goal-item"
+        *ngFor="let scorer of formatScorers(match.homeScorers)">
+
+        <i class="bi bi-soccer-ball"></i>
+
+        {{scorer}}
+
+    </div>
+
+</div>
+
+<ng-template #noHomeGoals>
+
+    <span class="no-goal">No Goals</span>
+
+</ng-template>
+
+            </div>
+
+            <div class="goal-team">
+
+                <h6>{{match.awayTeam}}</h6>
+
+                <div *ngIf="formatScorers(match.awayScorers).length; else noAwayGoals">
+
+    <div
+        class="goal-item"
+        *ngFor="let scorer of formatScorers(match.awayScorers)">
+
+        <i class="bi bi-soccer-ball"></i>
+
+        {{scorer}}
+
+    </div>
+
+</div>
+
+<ng-template #noAwayGoals>
+
+    <span class="no-goal">No Goals</span>
+
+</ng-template>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<app-footer></app-footer>

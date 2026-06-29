@@ -1,5 +1,7 @@
 using Club.Core.DAL;
 using Club.Core.Repositories;
+using Club.Core.Service;
+//using Club.Core.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,11 @@ builder.Services.AddSingleton<DBConnection>();
 builder.Services.AddScoped<AuthRepository>();
 builder.Services.AddScoped<ProfileRepository>();
 builder.Services.AddScoped<PredictionRepository>();
+
+
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<WorldCupSyncService>();
+builder.Services.AddHostedService<MatchBackgroundService>();
 
 
 builder.Services.AddCors(options =>

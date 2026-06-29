@@ -54,12 +54,29 @@ export class Login {
           this.errorMessage = '';
           this.successMessage = res.message;
 
-          localStorage.setItem('UserName', res.userName);
-          localStorage.setItem('UserID', res.userID);
-          localStorage.setItem('Email', res.email);
-          localStorage.setItem('SelectedTeam', res.teamName || '');
-          localStorage.setItem('ProfileImage',res.profileImage || '/Profile/DefaultProfile.png'
-          );
+          // Clear old data
+  localStorage.clear();
+
+  // Update BehaviorSubjects FIRST
+  this.profileService.updateUserName('');
+  this.profileService.updateProfileImage('/Profile/DefaultProfile.png');
+
+          // Save new data
+  localStorage.setItem('UserName', res.userName);
+  localStorage.setItem('UserID', res.userID.toString());
+  localStorage.setItem('Email', res.email);
+  localStorage.setItem('SelectedTeam', res.teamName || '');
+  localStorage.setItem(
+    'ProfileImage',
+    res.profileImage || '/Profile/DefaultProfile.png'
+  );
+
+           // Update BehaviorSubjects with new values
+  this.profileService.updateUserName(res.userName);
+  this.profileService.updateProfileImage(
+    res.profileImage || '/Profile/DefaultProfile.png'
+  );
+
 
           setTimeout(() => {
             this.router.navigate(['/home']);

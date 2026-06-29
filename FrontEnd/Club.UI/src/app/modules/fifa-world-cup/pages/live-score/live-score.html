@@ -1,0 +1,59 @@
+<div class="live-card" *ngIf="liveMatches.length > 0">
+
+    <div class="live-header">
+
+        <span class="live-badge">
+            🔴 LIVE
+        </span>
+
+        <span class="live-title">
+            Live Match
+        </span>
+
+    </div>
+
+    <div *ngFor="let match of liveMatches" class="live-match">
+
+        <div class="team">
+
+            <img [src]="match.homeFlag">
+
+            <span>{{match.homeTeam}}</span>
+
+        </div>
+
+        <div class="score-box">
+
+            <div class="score">
+
+                {{match.homeScore}}
+
+                -
+
+                {{match.awayScore}}
+
+            </div>
+
+            <small>{{match.timeElapsed}}'</small>
+
+        </div>
+
+        <div class="team">
+
+            <img [src]="match.awayFlag">
+
+            <span>{{match.awayTeam}}</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="no-live-card" *ngIf="liveMatches.length==0">
+
+    <i class="bi bi-broadcast"></i>
+
+    <span>No Live Matches</span>
+
+</div>

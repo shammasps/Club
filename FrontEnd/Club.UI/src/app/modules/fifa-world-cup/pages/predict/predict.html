@@ -11,9 +11,7 @@
 
     </div>
 
-    <div
-        class="prediction-card"
-        *ngFor="let item of predictions">
+    <div class="prediction-card" *ngFor="let item of predictions">
 
         <div class="card-header">
 
@@ -30,16 +28,24 @@
                 {{item.matchDate}}
 
             </span>
+            <div class="countdown" *ngIf="item.finished=='FALSE'">
 
+                <i class="bi bi-hourglass-split"></i>
+
+                Starts in
+
+                {{item.countdown}}
+
+            </div>
         </div>
+
+
 
         <div class="teams-section">
 
             <div class="team">
 
-                <img
-                    [src]="item.homeFlag"
-                    class="team-logo">
+                <img [src]="item.homeFlag" class="team-logo">
 
                 <h5>{{item.homeTeam}}</h5>
 
@@ -63,9 +69,7 @@
 
             <div class="team">
 
-                <img
-                    [src]="item.awayFlag"
-                    class="team-logo">
+                <img [src]="item.awayFlag" class="team-logo">
 
                 <h5>{{item.awayTeam}}</h5>
 
@@ -83,9 +87,9 @@
 
             </div>
 
-            <span
-                *ngIf="item.finished=='FALSE'"
-                class="status upcoming">
+
+
+            <span *ngIf="item.finished=='FALSE'" class="status upcoming">
 
                 <i class="bi bi-clock-fill"></i>
 
@@ -93,9 +97,7 @@
 
             </span>
 
-            <span
-                *ngIf="item.finished=='TRUE'"
-                class="status finished">
+            <span *ngIf="item.finished=='TRUE'" class="status finished">
 
                 <i class="bi bi-check-circle-fill"></i>
 
@@ -105,16 +107,124 @@
 
         </div>
 
-        <button
-            *ngIf="item.finished=='FALSE'"
-            class="edit-btn">
+      <button
+    class="edit-btn"
+    *ngIf="item.finished == 'FALSE'"
+    [disabled]="item.predictionClosed"
+    (click)="editPrediction(item)">
 
-            <i class="bi bi-pencil-square"></i>
+    <i class="bi bi-pencil-square"></i>
 
-            Edit Prediction
+    {{
+      item.predictionClosed
+      ? 'Prediction Closed'
+      : 'Edit Prediction'
+    }}
+
+</button>
+
+    </div>
+
+</div>
+
+
+<!-- Prediction Modal -->
+<div class="prediction-overlay" *ngIf="showPredictionModal">
+
+    <div class="prediction-modal">
+
+        <div class="modal-header">
+
+            <h4>Match Prediction</h4>
+
+            <button class="close-btn" (click)="closePrediction()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+        </div>
+
+        <div class="match-preview">
+
+            <div class="team">
+
+                <img [src]="selectedMatch?.homeFlag">
+
+                <h5>{{ selectedMatch?.homeTeam }}</h5>
+
+            </div>
+
+            <div class="vs-section">
+
+                <span class="vs">VS</span>
+
+            </div>
+
+            <div class="team">
+
+                <img [src]="selectedMatch?.awayFlag">
+
+                <h5>{{ selectedMatch?.awayTeam }}</h5>
+
+            </div>
+
+        </div>
+
+        <label class="label">
+            Predict Final Score
+        </label>
+
+        <div class="score-box">
+
+            <div class="score-team">
+
+                <button class="score-btn" (click)="decreaseHomeScore()">
+                    <i class="bi bi-dash-lg"></i>
+                </button>
+
+                <input type="number" min="0" [(ngModel)]="prediction.homeScore" (ngModelChange)="updatePrediction()">
+
+                <button class="score-btn" (click)="increaseHomeScore()">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+
+            </div>
+
+            <span class="dash">-</span>
+
+            <div class="score-team">
+
+                <button class="score-btn" (click)="decreaseAwayScore()">
+                    <i class="bi bi-dash-lg"></i>
+                </button>
+
+                <input type="number" min="0" [(ngModel)]="prediction.awayScore" (ngModelChange)="updatePrediction()">
+
+                <button class="score-btn" (click)="increaseAwayScore()">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="prediction-result">
+
+            <i class="bi bi-trophy-fill"></i>
+
+            {{ predictionResult }}
+
+        </div>
+
+        <button class="save-btn" (click)="savePrediction()">
+
+            <i class="bi bi-check-circle-fill"></i>
+
+            Save Prediction
 
         </button>
 
     </div>
 
 </div>
+
+<app-footer></app-footer>

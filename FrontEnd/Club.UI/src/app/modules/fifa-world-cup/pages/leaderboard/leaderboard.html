@@ -1,0 +1,90 @@
+<div class="leaderboard-page">
+
+    <div class="page-header">
+
+        <h2>
+            <i class="bi bi-trophy-fill"></i>
+            Leaderboard
+        </h2>
+
+    </div>
+
+    <div class="table-header">
+
+        <div>#</div>
+
+        <div>Player</div>
+
+        <div class="center">
+            <i class="bi bi-check-lg"></i>
+        </div>
+
+        <div class="center">
+            <i class="bi bi-x-lg"></i>
+        </div>
+
+        <div class="center">
+            PTS
+        </div>
+
+    </div>
+
+    <div
+        class="table-row"
+        *ngFor="let user of leaderboard">
+
+        <div class="rank">
+
+            <span *ngIf="user.rank==1">🥇</span>
+
+            <span *ngIf="user.rank==2">🥈</span>
+
+            <span *ngIf="user.rank==3">🥉</span>
+
+            <span *ngIf="user.rank>3">
+                {{user.rank}}
+            </span>
+
+        </div>
+
+        <div class="player">
+
+            {{user.userName}}
+
+        </div>
+
+        <div class="center">
+
+            <span class="badge success">
+
+                {{user.correctPrediction}}
+
+            </span>
+
+        </div>
+
+        <div class="center">
+
+            <span class="badge danger">
+
+                {{user.wrongPrediction}}
+
+            </span>
+
+        </div>
+
+        <div class="center">
+
+            <span class="points">
+
+                {{user.totalPoints}}
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<app-footer></app-footer>

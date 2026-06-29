@@ -1,5 +1,6 @@
 ﻿using Club.Core.DTOs;
 using Club.Core.Repositories;
+using Club.Core.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -7,13 +8,19 @@ namespace Club.Core.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+
+  
     public class PredictionController : ControllerBase
     {
         private readonly PredictionRepository _predictionRepository;
 
-        public PredictionController(PredictionRepository predictionRepository)
+        private readonly WorldCupSyncService _syncService;
+
+        public PredictionController(PredictionRepository predictionRepository, WorldCupSyncService syncService)
         {
             _predictionRepository = predictionRepository;
+
+            _syncService = syncService;
         }
 
         [HttpPost]
@@ -105,5 +112,113 @@ namespace Club.Core.Controllers
                 });
             }
         }
+
+        [HttpPost]
+        [Route("CalculatePredictionPoints")]
+        public IActionResult CalculatePredictionPoints([FromBody] PredictionPointDTO obj)
+        {
+            try
+            {
+                DataTable dt =
+                    _predictionRepository.CalculatePredictionPoints(obj);
+
+                return Ok(new
+                {
+                    Success = true,
+                    Message = "Prediction points calculated successfully."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("SyncFinishedMatches")]
+        public async Task<IActionResult> SyncFinishedMatches()
+        {
+            try
+            {
+                await _syncService.SyncFinishedMatches();
+
+                return Ok(new
+                {
+                    Success = true,
+                    Message = "Finished matches synchronized successfully."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
+            }
+        }
+
+
+
+        [HttpGet("GetLeaderboard")]
+        public IActionResult GetLeaderboard()
+        {
+            try
+            {
+                DataTable dt = _predictionRepository.GetLeaderboard();
+
+                if (dt.Rows.Count == 0)
+                {
+                    return Ok(new
+                    {
+                        Success = false,
+                        Message = "No Leaderboard Data Found",
+                        Leaderboard = new List<LeaderboardDTO>()
+                    });
+                }
+
+                List<LeaderboardDTO> leaderboard = new();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    leaderboard.Add(new LeaderboardDTO
+                    {
+                        Rank = Convert.ToInt32(row["Rank"]),
+
+                        UserID = Convert.ToInt32(row["UserID"]),
+
+                        UserName = row["UserName"].ToString() ?? "",
+
+                        TotalPoints = Convert.ToInt32(row["TotalPoints"]),
+
+                        CorrectPrediction = Convert.ToInt32(row["CorrectPrediction"]),
+
+                        WrongPrediction = Convert.ToInt32(row["WrongPrediction"])
+                    });
+                }
+
+                return Ok(new
+                {
+                    Success = true,
+                    Message = "Leaderboard Loaded Successfully",
+                    Leaderboard = leaderboard
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
+            }
+        }
+
+
+
+
     }
 }

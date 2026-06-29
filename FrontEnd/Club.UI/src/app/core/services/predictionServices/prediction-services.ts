@@ -27,5 +27,12 @@ export class PredictionService {
     );
 
   }
+getLeaderboard() {
+
+  return this.http.get(
+    `${this.apiUrl}/GetLeaderboard`
+  );
+
+}
 
 }

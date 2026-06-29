@@ -116,3 +116,28 @@ BEGIN
     ADD Finished NVARCHAR(100);
 END
 GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'Points' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD Points INT DEFAULT 0;
+END
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'IsEvaluated' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD IsEvaluated BIT DEFAULT 0;
+END
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'WrongPrediction' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD WrongPrediction BIT NOT NULL DEFAULT(0);
+END
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'CorrectPrediction' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD CorrectPrediction BIT NOT NULL DEFAULT(0);
+END
+GO
+

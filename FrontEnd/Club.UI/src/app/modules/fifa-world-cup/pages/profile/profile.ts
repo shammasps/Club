@@ -79,7 +79,7 @@ export class Profile {
   }
 
   loadProfile() {
-    debugger;
+    
     const userID = Number(localStorage.getItem('UserID'));
 
     this.profileService.getProfile(userID)
@@ -240,9 +240,13 @@ export class Profile {
 
   logout() {
 
-    localStorage.clear();
-
-    this.router.navigate(['/login']);
+     // Clear all saved data
+  localStorage.clear();
+setTimeout(() => {
+  this.router.navigate(['/login']);
+}, 1000);
+  // Navigate to Login
+  
 
   }
 }
