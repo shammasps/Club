@@ -40,13 +40,6 @@ BEGIN
     ADD CONSTRAINT UQ_Users_UserName UNIQUE (UserName);
 END
 GO
-
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_Users_Mobile')
-BEGIN
-    ALTER TABLE Users
-    ADD CONSTRAINT UQ_Users_Mobile UNIQUE (Mobile);
-END
-GO
 IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'TeamName'AND Object_ID = Object_ID('Users'))
 BEGIN
     ALTER TABLE Users
@@ -131,13 +124,63 @@ GO
 IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'WrongPrediction' AND Object_ID = Object_ID('FIFAPrediction'))
 BEGIN
     ALTER TABLE FIFAPrediction
-    ADD WrongPrediction BIT NOT NULL DEFAULT(0);
+    ADD WrongPrediction INT DEFAULT 0;
 END
 GO
 IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'CorrectPrediction' AND Object_ID = Object_ID('FIFAPrediction'))
 BEGIN
     ALTER TABLE FIFAPrediction
-    ADD CorrectPrediction BIT NOT NULL DEFAULT(0);
+    ADD CorrectPrediction INT DEFAULT 0;
+END
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'HomePenalty' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD HomePenalty INT NULL
+END
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'AwayPenalty' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD AwayPenalty INT NULL;
+END
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.columns WHERE Name = 'EmailSent' AND Object_ID = Object_ID('FIFAPrediction'))
+BEGIN
+    ALTER TABLE FIFAPrediction
+    ADD EmailSent BIT NOT NULL DEFAULT(0);
 END
 GO
 
+
+
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'FIFAMatchSchedule')
+BEGIN
+CREATE TABLE FIFAMatchSchedule
+(
+    MatchID INT PRIMARY KEY,
+
+    HomeTeam NVARCHAR(100),
+
+    AwayTeam NVARCHAR(100),
+
+    MatchDate DATETIME,
+
+    MatchType NVARCHAR(50),
+
+    EmailSent BIT DEFAULT 0,
+
+    CreatedDate DATETIME DEFAULT GETDATE()
+)
+END
+GO
+--IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'FIFAPredictionEmailLog')
+--BEGIN
+--CREATE TABLE FIFAPredictionEmailLog
+--(
+--    MatchID INT PRIMARY KEY,
+--    EmailSent BIT NOT NULL DEFAULT(0),
+--    SentDate DATETIME NULL
+--);
+--END
+--GO

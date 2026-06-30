@@ -54,5 +54,7 @@ namespace Club.Core.Service
                 await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
             }
         }
+
+
     }
 }

@@ -5,10 +5,11 @@ import { MatchService } from '../../../../core/services/matchServices/match-serv
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Footer } from '../../components/footer/footer';
+import { Navbar } from '../../components/navbar/navbar';
 
 @Component({
   selector: 'app-results',
-  imports: [CommonModule,FormsModule,Footer],
+  imports: [CommonModule,FormsModule,Footer,Navbar],
   templateUrl: './results.html',
   styleUrl: './results.css',
 })

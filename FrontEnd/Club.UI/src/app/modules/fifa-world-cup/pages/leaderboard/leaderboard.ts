@@ -3,10 +3,11 @@ import { PredictionService } from '../../../../core/services/predictionServices/
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Footer } from '../../components/footer/footer';
+import { Navbar } from '../../components/navbar/navbar';
 
 @Component({
   selector: 'app-leaderboard',
-  imports: [FormsModule,CommonModule,Footer],
+  imports: [FormsModule,CommonModule,Footer,Navbar],
   templateUrl: './leaderboard.html',
   styleUrl: './leaderboard.css',
 })

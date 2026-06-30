@@ -22,6 +22,10 @@
 
         public string Finished { get; set; } = string.Empty;
 
+        public int HomePenalty { get; set; }
+
+        public int AwayPenalty { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public DateTime? UpdatedDate { get; set; }

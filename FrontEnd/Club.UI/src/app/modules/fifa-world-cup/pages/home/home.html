@@ -18,7 +18,7 @@
 
             <div class="profile-section" routerLink="/profile">
 
-                <img [src]="profileImage" class="profile-image">
+                <img [src]="profileImage" (error)="profileImage='/Profile/DefaultProfile.png'" class="profile-image">
 
             </div>
 
@@ -84,7 +84,7 @@
 
                 <div class="team">
 
-                    <img [src]="match.homeFlag" class="team-logo" alt="{{ match.homeTeam }}">
+                    <img [src]="match.homeFlag" class="team-logo" alt="{{ match.homeTeam }}"  (error)="onImageError($event)">
 
                     <h5>{{ match.homeTeam }}</h5>
 
@@ -98,7 +98,7 @@
 
                 <div class="team">
 
-                    <img [src]="match.awayFlag" class="team-logo" alt="{{ match.awayTeam }}">
+                    <img [src]="match.awayFlag" class="team-logo" alt="{{ match.awayTeam }}"  (error)="onImageError($event)">
 
                     <h5>{{ match.awayTeam }}</h5>
 
@@ -243,7 +243,51 @@
 
         </div>
 
-        <div class="prediction-result">
+        <div class="penalty-box" *ngIf="prediction.homeScore == prediction.awayScore && isKnockoutMatch()">
+
+            <label class="label">
+                Penalty Shootout
+            </label>
+
+            <div class="score-box">
+
+                <div class="score-team">
+
+                    <button class="score-btn" (click)="decreaseHomePenalty()">
+                        <i class="bi bi-dash-lg"></i>
+                    </button>
+
+                    <input type="number" min="0" [(ngModel)]="prediction.homePenalty"
+                        (ngModelChange)="updatePrediction()">
+
+                    <button class="score-btn" (click)="increaseHomePenalty()">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+
+                </div>
+
+                <span class="dash">-</span>
+
+                <div class="score-team">
+
+                    <button class="score-btn" (click)="decreaseAwayPenalty()">
+                        <i class="bi bi-dash-lg"></i>
+                    </button>
+
+                    <input type="number" min="0" [(ngModel)]="prediction.awayPenalty"
+                        (ngModelChange)="updatePrediction()">
+
+                    <button class="score-btn" (click)="increaseAwayPenalty()">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="prediction-summary">
 
             <i class="bi bi-trophy-fill"></i>
 

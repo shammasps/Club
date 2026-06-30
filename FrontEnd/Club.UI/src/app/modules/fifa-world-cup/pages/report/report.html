@@ -1,0 +1,106 @@
+
+<div style="height:70px"></div>
+
+<div class="container">
+
+    <div class="page-header">
+
+        <h2>
+
+            <i class="bi bi-file-earmark-excel-fill"></i>
+
+            Prediction Reports
+
+        </h2>
+
+    </div>
+
+    <div
+        class="match-card"
+        *ngFor="let item of matches">
+
+        <div class="match-header">
+
+            <div>
+
+                <h4>
+
+                    {{item.homeTeam}}
+
+                    <span class="vs">
+
+                        VS
+
+                    </span>
+
+                    {{item.awayTeam}}
+
+                </h4>
+
+            </div>
+
+        </div>
+
+        <div class="match-info">
+
+            <p>
+
+                <i class="bi bi-calendar-event"></i>
+
+                {{item.matchDate | date:'dd MMM yyyy'}}
+
+            </p>
+
+            <p>
+
+                <i class="bi bi-clock"></i>
+
+                {{item.matchDate | date:'hh:mm a'}}
+
+            </p>
+
+            <p>
+
+                <i class="bi bi-trophy"></i>
+
+                {{item.matchType}}
+
+            </p>
+
+            <p>
+
+                <i class="bi bi-people-fill"></i>
+
+                {{item.predictionCount}} Predictions
+
+            </p>
+
+        </div>
+
+        <button
+            class="download-btn"
+            (click)="downloadExcel(item)">
+
+            <i class="bi bi-download"></i>
+
+            Download Excel
+
+        </button>
+
+    </div>
+
+    <div
+        class="no-data"
+        *ngIf="matches.length==0 && !loading">
+
+        <i class="bi bi-file-earmark-excel"></i>
+
+        <h4>
+
+            No Started Matches
+
+        </h4>
+
+    </div>
+
+</div>

@@ -1,6 +1,8 @@
 using Club.Core.DAL;
+using Club.Core.DTOs;
 using Club.Core.Repositories;
 using Club.Core.Service;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 //using Club.Core.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,19 @@ builder.Services.AddScoped<PredictionRepository>();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<WorldCupSyncService>();
 builder.Services.AddHostedService<MatchBackgroundService>();
+
+
+//builder.Services.AddScoped<PredictionEmailService>();
+builder.Services.AddScoped<ExcelService>();
+
+
+
+//builder.Services.Configure<MailSettings>(
+//    builder.Configuration.GetSection("MailSettings"));
+
+//builder.Services.AddScoped<MailService>();
+//builder.Services.AddHostedService<PredictionEmailBackgroundService>();
+
 
 
 builder.Services.AddCors(options =>

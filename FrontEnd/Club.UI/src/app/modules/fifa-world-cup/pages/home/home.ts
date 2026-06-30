@@ -65,6 +65,8 @@ export class Home {
 
   todayMatches: any[] = [];
 
+  userPredictions: any[] = [];
+
   ngOnInit() {
 
 
@@ -85,6 +87,7 @@ export class Home {
 
 
     this.loadTeams();
+    this.loadUserPredictions();
 
     // this.profileService.profileImage$
     //   .subscribe(image => {
@@ -101,6 +104,11 @@ export class Home {
     //   });
 
   }
+
+  onImageError(event: Event): void {
+  const img = event.target as HTMLImageElement;
+  img.src = '\Dummy_flag.png';
+}
 
   loadTeams() {
 
@@ -281,7 +289,9 @@ export class Home {
 
   prediction = {
     homeScore: 0,
-    awayScore: 0
+    awayScore: 0,
+    homePenalty: 0,
+  awayPenalty: 0
   };
 
   predictionResult = 'Draw';
@@ -310,10 +320,47 @@ export class Home {
 
     this.selectedMatch = match;
 
+  //   this.prediction = {
+  //     homeScore: 0,
+  //     awayScore: 0,
+  //     homePenalty: 0,
+  // awayPenalty: 0
+  //   };
+
+  const oldPrediction = this.userPredictions.find(
+    (x:any) => Number(x.matchID) === Number(match.id)
+);
+
+if(oldPrediction){
+
     this.prediction = {
-      homeScore: 0,
-      awayScore: 0
+
+        homeScore: oldPrediction.homeScore,
+
+        awayScore: oldPrediction.awayScore,
+
+        homePenalty: oldPrediction.homePenalty ?? 0,
+
+        awayPenalty: oldPrediction.awayPenalty ?? 0
+
     };
+
+}
+else{
+
+    this.prediction = {
+
+        homeScore: 0,
+
+        awayScore: 0,
+
+        homePenalty: 0,
+
+        awayPenalty: 0
+
+    };
+
+}
 
     this.updatePrediction();
 
@@ -369,27 +416,92 @@ export class Home {
 
   }
 
-  updatePrediction() {
+  increaseHomePenalty() {
 
-    if (this.prediction.homeScore > this.prediction.awayScore) {
+  this.prediction.homePenalty++;
+
+  this.updatePrediction();
+
+}
+
+decreaseHomePenalty() {
+
+  if (this.prediction.homePenalty > 0) {
+
+    this.prediction.homePenalty--;
+
+    this.updatePrediction();
+
+  }
+
+}
+
+increaseAwayPenalty() {
+
+  this.prediction.awayPenalty++;
+
+  this.updatePrediction();
+
+}
+
+decreaseAwayPenalty() {
+
+  if (this.prediction.awayPenalty > 0) {
+
+    this.prediction.awayPenalty--;
+
+    this.updatePrediction();
+
+  }
+
+}
+
+isKnockoutMatch(): boolean {
+
+  return this.selectedMatch &&
+         this.selectedMatch.type !== 'Group Stage';
+
+}
+
+
+updatePrediction() {
+
+  if (this.prediction.homeScore > this.prediction.awayScore) {
+
+    this.predictionResult =
+      `${this.selectedMatch.homeTeam} Wins`;
+
+  }
+  else if (this.prediction.homeScore < this.prediction.awayScore) {
+
+    this.predictionResult =
+      `${this.selectedMatch.awayTeam} Wins`;
+
+  }
+  else {
+
+    if (this.prediction.homePenalty > this.prediction.awayPenalty) {
 
       this.predictionResult =
-        `${this.selectedMatch?.homeTeam} Wins`;
+        `${this.selectedMatch.homeTeam} Wins on Penalties`;
 
     }
-    else if (this.prediction.homeScore < this.prediction.awayScore) {
+    else if (this.prediction.homePenalty < this.prediction.awayPenalty) {
 
       this.predictionResult =
-        `${this.selectedMatch?.awayTeam} Wins`;
+        `${this.selectedMatch.awayTeam} Wins on Penalties`;
 
     }
     else {
 
-      this.predictionResult = 'Draw';
+      this.predictionResult =
+        'Select Penalty Winner';
 
     }
 
   }
+
+}
 
   savePrediction() {
 
@@ -401,6 +513,20 @@ export class Home {
 
       return;
     }
+
+    if (
+    this.prediction.homeScore === this.prediction.awayScore &&
+    this.isKnockoutMatch() &&
+    this.prediction.homePenalty === this.prediction.awayPenalty
+) {
+
+    this.notification.warning(
+        'Penalty shootout cannot end in a draw.'
+    );
+
+    return;
+
+}
 
     const data = {
 
@@ -415,6 +541,9 @@ export class Home {
       homeScore: this.prediction.homeScore,
 
       awayScore: this.prediction.awayScore,
+      homePenalty: this.prediction.homePenalty,
+
+      awayPenalty: this.prediction.awayPenalty,
 
       matchDate: this.selectedMatch.date,
 
@@ -422,13 +551,16 @@ export class Home {
 
       finished: this.selectedMatch.finished,
 
-
-      winner:
-        this.prediction.homeScore > this.prediction.awayScore
-          ? this.selectedMatch.homeTeam
-          : this.prediction.homeScore < this.prediction.awayScore
-            ? this.selectedMatch.awayTeam
-            : 'Draw'
+winner:
+this.prediction.homeScore > this.prediction.awayScore
+? this.selectedMatch.homeTeam
+: this.prediction.homeScore < this.prediction.awayScore
+? this.selectedMatch.awayTeam
+: this.prediction.homePenalty > this.prediction.awayPenalty
+? this.selectedMatch.homeTeam
+: this.prediction.homePenalty < this.prediction.awayPenalty
+? this.selectedMatch.awayTeam
+: ''
 
     };
 
@@ -442,8 +574,10 @@ export class Home {
 
           // alert(res[0].Message);
           this.showPredictionModal = false;
+          document.body.style.overflow = 'auto';
           this.notification.success(res.message);
-          this.cdr.detectChanges();
+          this.loadUserPredictions();
+          // this.cdr.detectChanges();
 
 
 
@@ -595,6 +729,31 @@ export class Home {
   clearInterval(this.countdownInterval);
 
   document.body.style.overflow = 'auto';
+
+}
+
+
+loadUserPredictions() {
+
+  const userId = Number(localStorage.getItem('UserID'));
+
+  this.predictionService.getPredictions(userId)
+    .subscribe({
+
+      next: (res: any) => {
+
+        if (res.success) {
+
+          this.userPredictions = res.predictions;
+          this.cdr.detectChanges();
+          this.prepareMatches();
+          
+
+        }
+
+      }
+
+    });
 
 }
 

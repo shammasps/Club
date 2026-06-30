@@ -80,6 +80,10 @@ namespace Club.Core.Controllers
 
                         AwayScore = Convert.ToInt32(row["AwayScore"]),
 
+                        HomePenalty = row["HomePenalty"] == DBNull.Value ? 0 : Convert.ToInt32(row["HomePenalty"]),
+
+                        AwayPenalty = row["AwayPenalty"] == DBNull.Value? 0 : Convert.ToInt32(row["AwayPenalty"]),
+
                         Winner = row["Winner"].ToString() ?? "",
 
                         MatchDate = row["MatchDate"].ToString() ?? "",
@@ -218,6 +222,22 @@ namespace Club.Core.Controllers
         }
 
 
+
+        [HttpPost("SaveSchedules")]
+        public IActionResult SaveSchedules(
+            [FromBody] List<MatchScheduleDTO> schedules)
+        {
+            foreach (var item in schedules)
+            {
+                _predictionRepository.SaveMatchSchedule(item);
+            }
+
+            return Ok(new
+            {
+                Success = true,
+                Message = "All Match Schedules Saved Successfully"
+            });
+        }
 
 
     }

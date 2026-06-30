@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { BehaviorSubject } from 'rxjs';
 
 export class ProfileService {
 
-    apiUrl = 'https://localhost:7180/api/Profile';
+  apiUrl = `${environment.apiUrl}/Profile`;
+    // apiUrl = 'https://localhost:7180/api/Profile';
 
   constructor(private http: HttpClient) {}
 

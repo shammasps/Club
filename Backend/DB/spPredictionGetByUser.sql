@@ -11,12 +11,14 @@ CREATE PROCEDURE spPredictionGetByUser
 AS
 BEGIN
 
-    SELECT PredictionID,UserID,MatchID,HomeTeam,AwayTeam,HomeScore,AwayScore,Winner,CreatedDate,UpdatedDate,MatchDate,MatchType,Finished
+    SELECT PredictionID,UserID,MatchID,HomeTeam,AwayTeam,
+            HomeScore,AwayScore,Winner,HomePenalty,AwayPenalty,
+            CreatedDate,UpdatedDate,MatchDate,MatchType,Finished
 
     FROM FIFAPrediction
     WHERE UserID = @UserID
 
-    ORDER BY MatchDate DESC
+    ORDER BY CreatedDate DESC
 
 END
 GO

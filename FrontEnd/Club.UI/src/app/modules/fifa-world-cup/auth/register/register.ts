@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { AuthService } from '../../../../core/services/authServices/auth-service';
 import { FormsModule } from '@angular/forms';
 import { Router,RouterLink } from '@angular/router';
 import { RegisterModel } from '../../../models/register.model';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../../../../core/services/notification/notification-service';
 
 @Component({
   selector: 'app-register',
@@ -34,7 +35,9 @@ export class Register {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private notification: NotificationService
   ) { }
 
   validateForm(): boolean {
@@ -105,15 +108,31 @@ export class Register {
     }
 
     this.authService.register(this.registerObj).subscribe({
-      next: (res: any) => {
-         setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 1000);
-      },
-      error: (err) => {
-        alert(err.error.message);
-      }
-    });
+  next: (res: any) => {
+
+    if (res.status === 1) {
+
+      this.notification.success(res.message);
+
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 1000);
+
+    } else {
+
+      this.notification.error(res.message);
+
+    }
+
+    this.cdr.detectChanges();
+  },
+  error: (err) => {
+
+    this.notification.error(err.error.message);
+
+    this.cdr.detectChanges();
+  }
+});
 
   }
 

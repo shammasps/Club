@@ -2,7 +2,7 @@ IF EXISTS (SELECT * FROM   sys.procedures WHERE  NAME = 'spRegister')
     BEGIN
         DROP PROCEDURE spRegister;
     END
-
+    --exec spRegister @UserName=N'hari',@Email=N'hari@gmail.com',@Password=N'$2a$11$FpUrV59f.YYDG1.jEkRd0.W1a4Z9q8Jq82EKLQ.H7D9zHukvIZDKe',@Mobile=N''
 GO
 CREATE PROCEDURE spRegister
 
@@ -20,11 +20,11 @@ BEGIN
         RETURN;
     END
 
-    IF EXISTS(SELECT 1 FROM Users WHERE Mobile = @Mobile)
-    BEGIN
-        SELECT 0 AS Status,'Mobile already exists' AS Message
-        RETURN;
-    END
+    --IF EXISTS(SELECT 1 FROM Users WHERE Mobile = @Mobile)
+    --BEGIN
+    --    SELECT 0 AS Status,'Mobile already exists' AS Message
+    --    RETURN;
+    --END
 
     IF EXISTS ( SELECT 1 FROM Users WHERE UserName = @UserName)
     BEGIN

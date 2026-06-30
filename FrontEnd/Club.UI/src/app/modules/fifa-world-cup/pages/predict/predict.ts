@@ -6,10 +6,11 @@ import { MatchService } from '../../../../core/services/matchServices/match-serv
 import { Footer } from '../../components/footer/footer';
 import { DateTime } from 'luxon';
 import { NotificationService } from '../../../../core/services/notification/notification-service';
+import { Navbar } from '../../components/navbar/navbar';
 
 @Component({
   selector: 'app-predict',
-  imports: [FormsModule, CommonModule, Footer],
+  imports: [FormsModule, CommonModule, Footer,Navbar],
   templateUrl: './predict.html',
   styleUrl: './predict.css',
 })
@@ -350,7 +351,9 @@ updateCountdown() {
 
     homeScore: 0,
 
-    awayScore: 0
+    awayScore: 0,
+    homePenalty: 0,
+  awayPenalty: 0
 
   };
 
@@ -374,7 +377,9 @@ updateCountdown() {
 
       homeScore: item.homeScore,
 
-      awayScore: item.awayScore
+      awayScore: item.awayScore,
+      homePenalty: item.homePenalty,
+      awayPenalty: item.awayPenalty
 
     };
 
@@ -389,29 +394,44 @@ updateCountdown() {
     this.showPredictionModal = false;
 
   }
+updatePrediction() {
 
-  updatePrediction() {
+  if (this.prediction.homeScore > this.prediction.awayScore) {
 
-    if (this.prediction.homeScore > this.prediction.awayScore) {
+    this.predictionResult =
+      `${this.selectedMatch.homeTeam} Wins`;
+
+  }
+  else if (this.prediction.homeScore < this.prediction.awayScore) {
+
+    this.predictionResult =
+      `${this.selectedMatch.awayTeam} Wins`;
+
+  }
+  else {
+
+    if (this.prediction.homePenalty > this.prediction.awayPenalty) {
 
       this.predictionResult =
-        `${this.selectedMatch.homeTeam} Wins`;
+        `${this.selectedMatch.homeTeam} Wins on Penalties`;
 
     }
-    else if (this.prediction.homeScore < this.prediction.awayScore) {
+    else if (this.prediction.homePenalty < this.prediction.awayPenalty) {
 
       this.predictionResult =
-        `${this.selectedMatch.awayTeam} Wins`;
+        `${this.selectedMatch.awayTeam} Wins on Penalties`;
 
     }
     else {
 
-      this.predictionResult = 'Draw';
+      this.predictionResult =
+        'Select Penalty Winner';
 
     }
 
   }
 
+}
   increaseHomeScore() {
 
     this.prediction.homeScore++;
@@ -452,43 +472,97 @@ updateCountdown() {
 
   }
 
+  increaseHomePenalty() {
+
+  this.prediction.homePenalty++;
+
+  this.updatePrediction();
+
+}
+
+decreaseHomePenalty() {
+
+  if (this.prediction.homePenalty > 0) {
+
+    this.prediction.homePenalty--;
+
+    this.updatePrediction();
+
+  }
+
+}
+
+increaseAwayPenalty() {
+
+  this.prediction.awayPenalty++;
+
+  this.updatePrediction();
+
+}
+
+decreaseAwayPenalty() {
+
+  if (this.prediction.awayPenalty > 0) {
+
+    this.prediction.awayPenalty--;
+
+    this.updatePrediction();
+
+  }
+
+}
+
   savePrediction() {
 
-    const data = {
+    if (
+  this.prediction.homeScore === this.prediction.awayScore &&
+  this.prediction.homePenalty === this.prediction.awayPenalty
+) {
 
-      userID: Number(localStorage.getItem('UserID')),
+  this.notification.warning(
+    'Penalty shootout cannot end in a draw.'
+  );
 
-      matchID: this.selectedMatch.matchID,
+  return;
 
-      homeTeam: this.selectedMatch.homeTeam,
+}
 
-      awayTeam: this.selectedMatch.awayTeam,
+   const data = {
 
-      homeScore: this.prediction.homeScore,
+  userID: Number(localStorage.getItem('UserID')),
 
-      awayScore: this.prediction.awayScore,
+  matchID: this.selectedMatch.matchID,
 
-      matchDate: this.selectedMatch.matchDate,
+  homeTeam: this.selectedMatch.homeTeam,
 
-      matchType: this.selectedMatch.matchType,
+  awayTeam: this.selectedMatch.awayTeam,
 
-      finished: this.selectedMatch.finished,
+  homeScore: this.prediction.homeScore,
 
-      winner:
+  awayScore: this.prediction.awayScore,
 
-        this.prediction.homeScore >
-          this.prediction.awayScore
+  homePenalty: this.prediction.homePenalty,
 
-          ? this.selectedMatch.homeTeam
+  awayPenalty: this.prediction.awayPenalty,
 
-          : this.prediction.homeScore <
-            this.prediction.awayScore
+  winner:
+this.prediction.homeScore > this.prediction.awayScore
+? this.selectedMatch.homeTeam
+: this.prediction.homeScore < this.prediction.awayScore
+? this.selectedMatch.awayTeam
+: this.prediction.homePenalty > this.prediction.awayPenalty
+? this.selectedMatch.homeTeam
+: this.prediction.homePenalty < this.prediction.awayPenalty
+? this.selectedMatch.awayTeam
+: '',
 
-            ? this.selectedMatch.awayTeam
+  matchDate: this.selectedMatch.matchDate,
 
-            : 'Draw'
+  matchType: this.selectedMatch.matchType,
 
-    };
+  finished: this.selectedMatch.finished
+
+};
 
     this.predictionService
       .savePrediction(data)
@@ -513,5 +587,12 @@ updateCountdown() {
       });
 
   }
+
+  isKnockoutMatch(): boolean {
+
+  return this.selectedMatch &&
+         this.selectedMatch.matchType !== 'Group Stage';
+
+}
 
 }

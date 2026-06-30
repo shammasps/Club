@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Prediction } from '../../../modules/models/prediction';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PredictionService {
 
-  private apiUrl = 'https://localhost:7180/api/Prediction';
+  apiUrl = `${environment.apiUrl}/Prediction`;
+  // private apiUrl = 'https://localhost:7180/api/Prediction';
 
   constructor(private http: HttpClient) { }
 
