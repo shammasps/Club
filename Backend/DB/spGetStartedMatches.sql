@@ -2,6 +2,8 @@ IF EXISTS (SELECT * FROM sys.procedures WHERE Name='spGetStartedMatches')
 DROP PROCEDURE spGetStartedMatches
 GO
 
+--exec spGetStartedMatches
+
 CREATE PROCEDURE spGetStartedMatches
 AS
 BEGIN

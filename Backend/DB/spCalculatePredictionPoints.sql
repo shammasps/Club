@@ -9,6 +9,8 @@ CREATE PROCEDURE spCalculatePredictionPoints
 @MatchID INT,
 @HomeScore INT,
 @AwayScore INT,
+@HomePenalty INT,
+@AwayPenalty INT,
 @Winner NVARCHAR(100)
 
 AS
@@ -21,15 +23,31 @@ BEGIN
 
         Points =
         CASE
-            WHEN HomeScore = @HomeScore
-             AND AwayScore = @AwayScore
-            THEN 5
+                WHEN HomeScore = @HomeScore
+                 AND AwayScore = @AwayScore
+                 AND HomePenalty = @HomePenalty
+                 AND AwayPenalty = @AwayPenalty
+                THEN 7
 
-            WHEN Winner = @Winner
-            THEN 3
+                WHEN HomeScore = @HomeScore
+                 AND AwayScore = @AwayScore
+                THEN 5
 
-            ELSE 0
-        END,
+                WHEN Winner = @Winner
+                THEN 3
+
+                ELSE 0
+            END,
+        --CASE
+        --    WHEN HomeScore = @HomeScore
+        --     AND AwayScore = @AwayScore
+        --    THEN 5
+
+        --    WHEN Winner = @Winner
+        --    THEN 3
+
+        --    ELSE 0
+        --END,
         CorrectPrediction = CASE WHEN HomeScore = @HomeScore AND AwayScore = @AwayScore THEN 1 WHEN Winner = @Winner THEN 1 ELSE 0 END, 
         WrongPrediction = CASE WHEN HomeScore = @HomeScore AND AwayScore = @AwayScore THEN 0 WHEN Winner = @Winner THEN 0 ELSE 1 END,
         IsEvaluated = 1,UpdatedDate = GETDATE()

@@ -51,11 +51,24 @@
 
         </div>
 
-        <div class="player">
+        <!-- <div class="player">
 
             {{user.userName}}
 
-        </div>
+        </div> -->
+
+        <div class="player">
+
+    <img
+        [src]="user.profileImage || '/Profile/DefaultProfile.png'"
+        class="profile-img"
+        alt="Profile">
+
+    <span>
+        {{user.userName}}
+    </span>
+
+</div>
 
         <div class="center">
 

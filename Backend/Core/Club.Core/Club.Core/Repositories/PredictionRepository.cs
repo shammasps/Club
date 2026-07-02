@@ -95,6 +95,10 @@ namespace Club.Core.Repositories
 
                 cmd.Parameters.AddWithValue("@AwayScore", obj.AwayScore);
 
+                cmd.Parameters.AddWithValue("@HomePenalty", obj.HomePenalty);
+
+                cmd.Parameters.AddWithValue("@AwayPenalty", obj.AwayPenalty);
+
                 cmd.Parameters.AddWithValue("@Winner", obj.Winner);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);

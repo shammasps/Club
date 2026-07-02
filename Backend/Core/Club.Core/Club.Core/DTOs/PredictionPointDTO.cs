@@ -7,6 +7,8 @@
         public int HomeScore { get; set; }
 
         public int AwayScore { get; set; }
+        public int HomePenalty { get; set; } 
+        public int AwayPenalty { get; set; }
 
         public string Winner { get; set; } = "";
     }

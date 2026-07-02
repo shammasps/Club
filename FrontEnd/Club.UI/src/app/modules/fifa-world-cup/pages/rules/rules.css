@@ -1,0 +1,87 @@
+.rules-page{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+    margin-bottom:90px;
+}
+
+.page-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.page-header h2{
+    font-weight:700;
+    color:#0d6efd;
+}
+
+.page-header p{
+    color:#666;
+}
+
+.rule-card{
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+.rule-card h4{
+    margin-bottom:15px;
+    color:#198754;
+    font-weight:600;
+}
+
+.rule-card ul{
+    padding-left:20px;
+    margin:0;
+}
+
+.rule-card li{
+    margin-bottom:10px;
+    line-height:1.6;
+}
+
+.points-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.points-table th{
+    background:#0d6efd;
+    color:#fff;
+    padding:12px;
+    text-align:left;
+}
+
+.points-table td{
+    padding:12px;
+    border:1px solid #ddd;
+}
+
+.points-table tr:nth-child(even){
+    background:#f8f9fa;
+}
+
+@media(max-width:768px){
+
+.rules-page{
+    padding:15px;
+}
+
+.rule-card{
+    padding:15px;
+}
+
+.points-table th,
+.points-table td{
+    font-size:14px;
+    padding:10px;
+}
+
+.page-header h2{
+    font-size:24px;
+}
+
+}

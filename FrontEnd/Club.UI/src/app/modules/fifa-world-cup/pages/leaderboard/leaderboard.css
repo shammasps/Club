@@ -59,11 +59,25 @@
 }
 
 .player{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.profile-img{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid #ddd;
+    flex-shrink:0;
+}
+/* .player{
 
     font-size:16px;
     font-weight:600;
 
-}
+} */
 
 .center{
 

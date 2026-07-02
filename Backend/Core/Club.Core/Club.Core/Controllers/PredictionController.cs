@@ -195,6 +195,7 @@ namespace Club.Core.Controllers
                         UserID = Convert.ToInt32(row["UserID"]),
 
                         UserName = row["UserName"].ToString() ?? "",
+                        ProfileImage = row["ProfileImage"]?.ToString() ?? "",
 
                         TotalPoints = Convert.ToInt32(row["TotalPoints"]),
 

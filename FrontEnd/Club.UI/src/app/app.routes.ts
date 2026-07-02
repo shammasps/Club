@@ -9,6 +9,7 @@ import { Leaderboard } from './modules/fifa-world-cup/pages/leaderboard/leaderbo
 import { MatchScheduleSync } from './modules/fifa-world-cup/pages/match-schedule-sync/match-schedule-sync';
 import { PredictionReportService } from './core/services/prediction-report-services/report-service';
 import { Report } from './modules/fifa-world-cup/pages/report/report';
+import { Rules } from './modules/fifa-world-cup/pages/rules/rules';
 
 export const routes: Routes = [
     
@@ -22,6 +23,7 @@ export const routes: Routes = [
     {path: 'leaderboard',component: Leaderboard},
     {path:'match-sync',component: MatchScheduleSync},
     {path:'prediction-report',component:Report},
+    {path:'rules',component:Rules},
 
     { path: '**', redirectTo: 'login' },
 ];

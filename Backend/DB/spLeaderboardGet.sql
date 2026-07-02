@@ -20,6 +20,7 @@ BEGIN
         U.UserID,
 
         U.UserName,
+        U.ProfileImage,
 
         ISNULL(SUM(P.Points),0) AS TotalPoints,
 
@@ -36,8 +37,8 @@ BEGIN
     GROUP BY
 
         U.UserID,
-        U.UserName
-        --U.ProfileImage,
+        U.UserName,
+        U.ProfileImage
         --U.TeamName
 
     ORDER BY TotalPoints DESC;
